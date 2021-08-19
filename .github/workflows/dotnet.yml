@@ -21,13 +21,13 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart/HomeShoppingCart.csproj
+      run: dotnet restore ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart.csproj
     - name: Build
-      run: dotnet build ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart/HomeShoppingCart.csproj --no-restore
+      run: dotnet build ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart.csproj --no-restore
     - name: Test
-      run: dotnet test ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart/HomeShoppingCart.csproj --no-build --verbosity normal
+      run: dotnet test ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart.csproj --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart/HomeShoppingCart.csproj -c Release -o dotnetcorewebapp
+      run: dotnet publish ${{github.workspace}}/HomeShoppingCart/HomeShoppingCart.csproj -c Release -o dotnetcorewebapp
     - name: deploy to azure web api
       uses: azure/webapps-deploy@v2
       with:
