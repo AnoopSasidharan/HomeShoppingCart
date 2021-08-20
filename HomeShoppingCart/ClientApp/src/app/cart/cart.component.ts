@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICart } from '../shared/Models/icart';
 import { DataService } from '../shared/Services/data.service';
 
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -13,6 +14,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
   CreateNewCart(): void {
     let cart: ICart = {
       Id: 0,
