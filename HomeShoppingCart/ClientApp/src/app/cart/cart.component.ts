@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ICart } from '../shared/Models/icart';
 import { DataService } from '../shared/services/data.service';
 
 @Component({
@@ -14,6 +15,12 @@ export class CartComponent implements OnInit {
   }
 
   createNewCart(): void {
-    
+    let cart: ICart = {
+      Id:0,
+      CreatedDate: new Date()
+    }
+    this.dataservice.CreatNewCart(cart).subscribe(
+      data => console.log(data)
+    );
   }
 }
