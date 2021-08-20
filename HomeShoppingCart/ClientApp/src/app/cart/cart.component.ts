@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICart } from '../shared/Models/icart';
-//import { DataService } from '../shared/Services/data.service';
+import { DataService } from '../shared/Services/data.service';
 
 
 @Component({
@@ -10,18 +10,18 @@ import { ICart } from '../shared/Models/icart';
 })
 export class CartComponent implements OnInit {
 
-  //constructor(private dataservice: DataService) { }
+  constructor(private dataservice: DataService) { }
 
   ngOnInit(): void {
   }
 
-  //CreateNewCart(): void {
-  //  let cart: ICart = {
-  //    Id: 0,
-  //    CreatedDate: new Date()
-  //  };
-  //  this.dataservice.CreatNewCart(cart).subscribe(data => {
-  //    console.log(data);
-  //  })
-  //}
+  CreateNewCart(): void {
+    let cart: ICart = {
+      Id: 0,
+      CreatedDate: new Date()
+    };
+    this.dataservice.CreatNewCart(cart).subscribe(data => {
+      console.log(data);
+    })
+  }
 }
