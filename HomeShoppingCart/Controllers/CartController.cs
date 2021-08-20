@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HomeShoppingCart.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CartController : ControllerBase
     {
         private readonly ICartRepository _cartRepository;
