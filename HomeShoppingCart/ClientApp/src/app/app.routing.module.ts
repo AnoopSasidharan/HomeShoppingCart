@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CartComponent } from './cart/cart.component';
 
-import { DataService } from './shared/Services/data.service';
-
 const approutes: Routes = [
   {
     path: 'cart',
