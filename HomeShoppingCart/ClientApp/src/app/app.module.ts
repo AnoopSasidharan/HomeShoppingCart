@@ -7,20 +7,26 @@ import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { CartComponent } from './cart/cart.component';
+import { ItemsComponent } from './items/items.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    CartComponent
+    CartComponent,
+    ItemsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    MatExpansionModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

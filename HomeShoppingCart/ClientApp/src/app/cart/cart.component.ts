@@ -14,13 +14,5 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createNewCart(): void {
-    let cart: ICart = {
-      Id:0,
-      CreatedDate: new Date()
-    }
-    this.dataservice.CreatNewCart(cart).subscribe(
-      data => console.log(data)
-    );
-  }
+ 
 }

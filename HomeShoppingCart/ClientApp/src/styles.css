@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import '~@angular/material/prebuilt-themes/purple-green.css';
 
 /* Provide sufficient contrast against white background */
 a {
@@ -10,3 +10,6 @@ code {
   color: #e01a76;
 }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
