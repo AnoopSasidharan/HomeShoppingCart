@@ -1,4 +1,6 @@
+import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { Item } from '../shared/Models/item';
 
 @Component({
   selector: 'app-items',
@@ -6,12 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./items.component.css']
 })
 export class ItemsComponent implements OnInit {
-  panelOpenState = false;
+  @Input() currentItem: Item;
   constructor() { }
 
   ngOnInit(): void {
   }
-  createOrAddShop(): void {
-  }
-
 }

@@ -3,12 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CartComponent } from './cart/cart.component';
 import { ItemsComponent } from './items/items.component';
+import { ShopComponent } from './shop/shop.component';
+import { SummaryComponent } from './summary/summary.component';
 
 
 const approutes: Routes = [
   { path: 'cart', component: CartComponent },
+  { path: 'summary', component: SummaryComponent },
   { path: 'items', component: ItemsComponent },
-  { path: '', redirectTo: '/items', pathMatch:'full' }
+  { path: '', redirectTo: '/summary', pathMatch:'full' }
 ];
 
 @NgModule({
