@@ -32,5 +32,20 @@ namespace HomeShoppingCart.Services
         {
             return await this._cartDbContext.SaveChangesAsync() > 0;
         }
+
+        public async Task<IEnumerable<Shop>> GetShopsAsync()
+        {
+            return await _cartDbContext.Shops.ToListAsync();
+        }
+
+        public async Task<Shop> GetShopByIdAsync(int shopId)
+        {
+            return await _cartDbContext.Shops.FindAsync(shopId);
+        }
+
+        public void AddShop(Shop shop)
+        {
+            _cartDbContext.Shops.Add(shop);
+        }
     }
 }

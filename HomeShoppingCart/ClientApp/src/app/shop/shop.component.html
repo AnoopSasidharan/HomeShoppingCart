@@ -4,13 +4,23 @@
       <mat-expansion-panel-header class="bg-secondary">
         <mat-panel-title>
           {{currentShop.Name}}
+          <form class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <!--<mat-label>Assignee</mat-label>-->
+              <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{option.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
         </mat-panel-title>
-        <!--<mat-panel-description>
-          Type your name and age
-        </mat-panel-description>-->
+        
+        <button class="btn btn-success mr-1">Save</button>
+        <button class="btn btn-primary mr-1">Add</button>
       </mat-expansion-panel-header>
       <app-items *ngFor="let item of currentShop.Items" [currentItem]="item"></app-items>
     </mat-expansion-panel>
   </mat-accordion>
-
 </section>
