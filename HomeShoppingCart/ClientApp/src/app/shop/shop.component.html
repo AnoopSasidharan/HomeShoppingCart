@@ -7,6 +7,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <app-items *ngFor="let item of currentShop.items" [currentItem]="item"></app-items>
+      <button class="btn btn-primary m-1">Add New Item</button>
     </mat-expansion-panel>
   </mat-accordion>
 </section>

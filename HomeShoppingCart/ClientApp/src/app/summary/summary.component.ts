@@ -74,12 +74,15 @@ export class SummaryComponent implements OnInit {
       this.dataService.CreateNewShop(newShop).subscribe(
         data => {
           let savedShop = data;
-          console.log(savedShop);
           this.availbaleShops.push(savedShop);
-          this.shops.push(selectedShop);
+          this.shops.push(savedShop);
+          this.IsShopEditing = false;
         });
     }
     
+  }
+  onCancel(): void {
+    this.IsShopEditing = false;
   }
 }
 
