@@ -1,3 +1,3 @@
 export class Item {
-  Name: string;
+  name: string;
 }

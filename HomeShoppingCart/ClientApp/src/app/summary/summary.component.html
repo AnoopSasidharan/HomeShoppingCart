@@ -1,3 +1,19 @@
 <app-shop *ngFor="let shop of shops" [currentShop]="shop"></app-shop>
+<form *ngIf="IsShopEditing" class="example-form bg-secondary text-light" (ngSubmit)="AddShop()">
+  <div class="row">
+    <mat-form-field class="col-md-7 m-1" appearance="fill">
+      <mat-label>Select a shop from List</mat-label>
+      <input type="text" matInput [formControl]="selectedShopControl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div class="col-md-3 m-1">
+      <button class="btn btn-success" type="submit">Save</button>
+    </div>
+  </div>
+</form>
 <button *ngIf="!IsShopEditing" class="btn btn-primary" (click)="addNewShop()"><i class="bi bi-plus-circle-fill "></i>Add New Shop</button>
 

@@ -1,7 +1,8 @@
 import { Item } from "./item";
 
 export class Shop {
-  Name: string;
-  IsEditMode: boolean;
-  Items: Item[] = [];
+  id: number;
+  name: string;
+  isEditMode: boolean;
+  items: Item[] = [];
 }

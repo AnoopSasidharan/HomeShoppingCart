@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { Item } from '../shared/Models/item';
 import { Shop } from '../shared/Models/shop';
+import { DataService } from '../shared/services/data.service';
 
 @Component({
   selector: 'app-summary',
@@ -9,35 +14,72 @@ import { Shop } from '../shared/Models/shop';
 })
 export class SummaryComponent implements OnInit {
   shops: Shop[] = [];
+  
+
   IsShopEditing = false;
-  constructor() { }
+  selectedShopControl = new FormControl();
+  availbaleShops: Shop[] = [];
+  
+  constructor(private dataService: DataService, private routeParams: ActivatedRoute) { }
 
   ngOnInit(): void {
-    //let shop1 = new Shop();
-    //shop1.Name = "Walmart";
-    //let item1 = new Item();
-    //item1.Name = "Orange";
-    //shop1.Items.push(item1);
-    //let item2 = new Item();
-    //item2.Name = "Apple";
-    //shop1.Items.push(item2);
-    //let item3 = new Item();
-    //item3.Name = "Peach";
-    //shop1.Items.push(item3);
-    //let shop2 = new Shop();
-    //shop2.Name = "Giant Eagle";
-    //let shop3 = new Shop();
-    //shop3.Name = "Indian Store";
 
-    //this.shops.push(shop1);
-    //this.shops.push(shop2);
-    //this.shops.push(shop3);
+    this.routeParams.data.subscribe(
+      data => {
+        this.availbaleShops = data.availShops;
+        console.table(this.availbaleShops);
+        console.table(data.availShops);
+        for (let i = 0; i < this.availbaleShops.length; i++) {
+          console.log(this.availbaleShops[i].name);
+        }
+      }
+    );
+
+    //let shop = new Shop();
+    //shop.Name = "Costco";
+    //shop.Id = 1;
+    //this.availbaleShops.push(shop);
+    
+    this.filteredOptions = this.selectedShopControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.availbaleShops.slice())
+      );
+    
+
   }
   addNewShop(): void {
     this.IsShopEditing = true;
-    let newshop = new Shop();
-    newshop.IsEditMode = true;
-    //newshop.Name = `Test ${new Date()}`;
-    this.shops.push(newshop);
+  }
+  filteredOptions: Observable<Shop[]>;
+
+  displayFn(shop: Shop): string {
+    return shop && shop.name ? shop.name : '';
+  }
+  private _filter(name: string): Shop[] {
+    const filterValue = name.toLowerCase();
+
+    return this.availbaleShops.filter(option => option.name.toLowerCase().includes(filterValue));
+  }
+  AddShop(): void {
+    var selectedShop = this.selectedShopControl.value;
+    if (selectedShop["name"]) {
+      this.shops.push(selectedShop);
+      this.IsShopEditing = false;
+    } else {
+      //new shop that needs to be added to db
+      let newShop = new Shop();
+      newShop.name = selectedShop;
+      this.dataService.CreateNewShop(newShop).subscribe(
+        data => {
+          let savedShop = data;
+          console.log(savedShop);
+          this.availbaleShops.push(savedShop);
+          this.shops.push(selectedShop);
+        });
+    }
+    
   }
 }
+
