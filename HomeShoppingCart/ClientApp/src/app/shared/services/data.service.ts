@@ -45,4 +45,7 @@ export class DataService implements Resolve<any> {
       return  of(this.allItemsStore);
     }
   }
+  CreateNewItem(item: Item): Observable<any> {
+    return this.http.post<Shop>(this._baseUrl + `api/items`, item);
+  }
 }

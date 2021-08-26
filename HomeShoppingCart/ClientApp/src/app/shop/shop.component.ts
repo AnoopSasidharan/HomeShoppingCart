@@ -40,8 +40,13 @@ export class ShopComponent implements OnInit {
       this.currentShop.items.push(selectedItem);
     } else {
       //add it to db
-      //get response
-      // add it to collection.
+      let newItem = new Item();
+      newItem.name = selectedItem;
+      this.dataservice.CreateNewItem(newItem).subscribe(
+        data => {
+          this.currentShop.items.push(data);
+          this.dataservice.allItemsStore.push(data);
+        })
     }
 
   }

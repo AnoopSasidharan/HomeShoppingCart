@@ -1,3 +1,10 @@
 <section>
-  <div>{{currentItem.name}}</div>
+  <div class="row border border-primary">
+    <div class="col-7">{{currentItem.name}}</div>
+    <div class="col-4">
+      <span (click)="addQuantity(1)"><i class="bi bi-plus text-success"></i></span>
+      <span>{{currentItem.quantity}}</span>
+      <span (click)="addQuantity(-1)"><i class="bi bi-dash text-danger"></i></span>
+    </div>
+  </div>
 </section>

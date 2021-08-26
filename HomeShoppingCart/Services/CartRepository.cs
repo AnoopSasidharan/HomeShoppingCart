@@ -51,5 +51,13 @@ namespace HomeShoppingCart.Services
         {
             return await _cartDbContext.Items.ToListAsync();
         }
+        public async Task<Item> GetItem(int Id)
+        {
+            return await _cartDbContext.Items.FindAsync(Id);
+        }
+        public void AddItem(Item item)
+        {
+            _cartDbContext.Items.Add(item);
+        }
     }
 }

@@ -12,5 +12,14 @@ export class ItemsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    if (!this.currentItem.quantity) {
+      this.currentItem.quantity = 0;
+    }
+  }
+  addQuantity(quanity: number): void {
+    if (!this.currentItem.quantity) {
+      this.currentItem.quantity = 0;
+    }
+    this.currentItem.quantity += quanity;
   }
 }
