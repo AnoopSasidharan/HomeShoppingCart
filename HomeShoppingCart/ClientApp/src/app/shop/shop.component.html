@@ -7,7 +7,24 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <app-items *ngFor="let item of currentShop.items" [currentItem]="item"></app-items>
-      <button class="btn btn-primary m-1">Add New Item</button>
+      <form *ngIf="isEditorAddMode" class="bg-secondary text-light" (ngSubmit)="saveItem()">
+        <div class="row">
+          <mat-form-field class="col-md-7 m-1" appearance="fill">
+            <mat-label>Select an item from list or add a New Item</mat-label>
+            <input type="text" matInput [formControl]="selectedItemControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <div class="col-md-3 m-1">
+            <button class="btn btn-success" type="submit">Save</button>
+            <button style="margin-left:2px;" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+          </div>
+        </div>
+      </form>
+      <button *ngIf="!isEditorAddMode" class="btn btn-primary m-1" (click)="addItem()">Add New Item</button>
     </mat-expansion-panel>
   </mat-accordion>
 </section>

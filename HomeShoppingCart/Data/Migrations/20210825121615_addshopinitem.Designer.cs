@@ -3,14 +3,16 @@ using System;
 using HomeShoppingCart.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HomeShoppingCart.Migrations
 {
     [DbContext(typeof(CartDbContext))]
-    partial class CartDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210825121615_addshopinitem")]
+    partial class addshopinitem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +47,12 @@ namespace HomeShoppingCart.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ShopId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
 
                     b.ToTable("Items");
                 });
@@ -64,42 +71,13 @@ namespace HomeShoppingCart.Migrations
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("HomeShoppingCart.Data.Entity.ShopItem", b =>
+            modelBuilder.Entity("HomeShoppingCart.Data.Entity.Item", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ShopId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("ShopId");
-
-                    b.ToTable("ShopItem");
-                });
-
-            modelBuilder.Entity("HomeShoppingCart.Data.Entity.ShopItem", b =>
-                {
-                    b.HasOne("HomeShoppingCart.Data.Entity.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HomeShoppingCart.Data.Entity.Shop", "Shop")
                         .WithMany("Items")
                         .HasForeignKey("ShopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Item");
 
                     b.Navigation("Shop");
                 });

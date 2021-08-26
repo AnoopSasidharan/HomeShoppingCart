@@ -9,6 +9,6 @@ namespace HomeShoppingCart.Data.Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Item> Items { get; set; } = new List<Item>();
+        public ICollection<ShopItem> Items { get; set; } = new List<ShopItem>();
     }
 }

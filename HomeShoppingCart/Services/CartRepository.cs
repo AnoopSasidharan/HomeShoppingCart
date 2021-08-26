@@ -47,5 +47,9 @@ namespace HomeShoppingCart.Services
         {
             _cartDbContext.Shops.Add(shop);
         }
+        public async Task<IEnumerable<Item>> GetItems()
+        {
+            return await _cartDbContext.Items.ToListAsync();
+        }
     }
 }
