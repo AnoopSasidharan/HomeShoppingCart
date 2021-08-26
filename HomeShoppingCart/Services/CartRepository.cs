@@ -47,11 +47,11 @@ namespace HomeShoppingCart.Services
         {
             _cartDbContext.Shops.Add(shop);
         }
-        public async Task<IEnumerable<Item>> GetItems()
+        public async Task<IEnumerable<Item>> GetItemsAync()
         {
             return await _cartDbContext.Items.ToListAsync();
         }
-        public async Task<Item> GetItem(int Id)
+        public async Task<Item> GetItemByIdAsync(int Id)
         {
             return await _cartDbContext.Items.FindAsync(Id);
         }

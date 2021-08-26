@@ -61,4 +61,7 @@ export class ShopComponent implements OnInit {
 
     return this.dataservice.allItemsStore.filter(option => option.name.toLowerCase().includes(filterValue));
   }
+  addToCart(): void {
+
+  }
 }

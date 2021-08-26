@@ -25,6 +25,7 @@
         </div>
       </form>
       <button *ngIf="!isEditorAddMode" class="btn btn-primary m-1" (click)="addItem()">Add New Item</button>
+      <button *ngIf="currentShop.items?.Length>0" class="btn btn-primary m-1" (click)="addToCart()">Add to Cart</button>
     </mat-expansion-panel>
   </mat-accordion>
 </section>

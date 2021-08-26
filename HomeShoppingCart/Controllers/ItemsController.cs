@@ -18,7 +18,7 @@ namespace HomeShoppingCart.Controllers
         [HttpGet("{Id}",Name ="GetItemById")]
         public async Task<ActionResult<Item>> GetItem(int Id)
         {
-            var item = await _cartRepository.GetItem(Id);
+            var item = await _cartRepository.GetItemByIdAsync(Id);
 
             if(item==null)
             {

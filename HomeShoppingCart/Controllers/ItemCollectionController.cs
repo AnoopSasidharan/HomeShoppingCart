@@ -19,7 +19,7 @@ namespace HomeShoppingCart.Controllers
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
         {
-            var items = await _cartRepository.GetItems();
+            var items = await _cartRepository.GetItemsAync();
             return Ok(items);
         }
     }
