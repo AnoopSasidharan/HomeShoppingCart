@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Shop = void 0;
 var Shop = /** @class */ (function () {
     function Shop() {
-        this.items = [];
+        this.shopItems = [];
     }
     return Shop;
 }());

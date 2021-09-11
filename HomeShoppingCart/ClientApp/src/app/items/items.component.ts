@@ -1,6 +1,7 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Item } from '../shared/Models/item';
+import { Shopitem } from '../shared/Models/shopitem';
 
 @Component({
   selector: 'app-items',
@@ -8,7 +9,7 @@ import { Item } from '../shared/Models/item';
   styleUrls: ['./items.component.css']
 })
 export class ItemsComponent implements OnInit {
-  @Input() currentItem: Item;
+  @Input() currentItem: Shopitem;
   constructor() { }
 
   ngOnInit(): void {
@@ -17,9 +18,10 @@ export class ItemsComponent implements OnInit {
     }
   }
   addQuantity(quanity: number): void {
-    if (!this.currentItem.quantity) {
-      this.currentItem.quantity = 0;
+    if (this.currentItem.quantity <= 0 && quanity<0) {
+      return;
     }
+
     this.currentItem.quantity += quanity;
   }
 }

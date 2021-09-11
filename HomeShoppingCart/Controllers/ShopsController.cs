@@ -40,5 +40,6 @@ namespace HomeShoppingCart.Controllers
             await _cartRepository.SaveRepositroyAsync();
             return CreatedAtRoute("GetShopById", new { Id = shop.Id }, shop);
         }
+        
     }
 }

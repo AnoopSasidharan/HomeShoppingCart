@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map, startWith } from 'rxjs/operators';
 import { Item } from '../shared/Models/item';
 import { Shop } from '../shared/Models/shop';
+import { Shopitem } from '../shared/Models/shopitem';
+import { CartService } from '../shared/services/cart.service';
 import { DataService } from '../shared/services/data.service';
 
 @Component({
@@ -17,7 +19,7 @@ export class ShopComponent implements OnInit {
   isEditorAddMode = false;
   selectedItemControl = new FormControl();
   filteredOptions: Observable<Item[]>;
-  constructor(private dataservice: DataService) { }
+  constructor(private dataservice: DataService, private cartService: CartService) { }
 
   ngOnInit(): void {
     this.filteredOptions = this.selectedItemControl.valueChanges
@@ -33,24 +35,49 @@ export class ShopComponent implements OnInit {
     this.isEditorAddMode = true;
   }
   saveItem(): void {
+    //console.log(`on save item`);
     this.isEditorAddMode = false;
     var selectedItem = this.selectedItemControl.value;
-    console.log(selectedItem);
+
+    //console.log(selectedItem);
+
+    let shopItem: Shopitem = new Shopitem();
+
+    let sItem = this.selectedItemControl.value as Item;
+    
+    if (!this.currentShop.shopItems) {
+      this.currentShop.shopItems = [];
+    }
+
     if (selectedItem["name"]) {
-      this.currentShop.items.push(selectedItem);
+      shopItem.itemId = sItem.id;
+      shopItem.isBagged = false;
+      shopItem.itemName = sItem.name;
+      shopItem.itemDescription = sItem.description;
+
+      this.currentShop.shopItems.push(shopItem);
+      
+      this.selectedItemControl.setValue(``);
     } else {
       //add it to db
       let newItem = new Item();
       newItem.name = selectedItem;
       this.dataservice.CreateNewItem(newItem).subscribe(
         data => {
-          this.currentShop.items.push(data);
+          shopItem.itemId = data.id;
+          shopItem.isBagged = false;
+          shopItem.itemName = data.name;
+          shopItem.itemDescription = data.description;
+
+          this.currentShop.shopItems.push(shopItem);
           this.dataservice.allItemsStore.push(data);
+          this.selectedItemControl.setValue(``);
         })
     }
 
   }
   onCancel(): void {
+    this.isEditorAddMode = false;
 
   }
   displayFn(item: Item): string {
@@ -62,6 +89,57 @@ export class ShopComponent implements OnInit {
     return this.dataservice.allItemsStore.filter(option => option.name.toLowerCase().includes(filterValue));
   }
   addToCart(): void {
+
+    //console.table(this.currentShop.shopItems);
+    var unsavedItems = this.currentShop.shopItems.filter(i => (!i.id) || (i.id < 1));
+
+    //console.log(this.currentShop.id);
     
+    
+    if (!this.cartService.userCart) {
+      this.cartService.createNewCart().subscribe(
+        data => {
+          //console.log(` cart id ${this.cartService.currentCart.CurrentCart.Id}`);
+          console.log(data);
+          unsavedItems.forEach(item => {
+            item.cartId = this.cartService.userCart.CurrentCart.id;
+            item.shopId = this.currentShop.id;
+            item.cartId = this.cartService.userCart.CurrentCart.id
+
+          });
+
+          console.log(unsavedItems);
+
+          this.dataservice.CreateShopItems(unsavedItems).subscribe(
+            items => {
+              console.log(items);
+            },
+            err => {
+              console.error(err);
+            }
+          )
+        },
+        err => {
+
+        }
+      )
+    } else {
+
+      unsavedItems.forEach(item => {
+        item.cartId = this.cartService.userCart.CurrentCart.id;
+        item.shopId = this.currentShop.id
+      })
+
+      this.dataservice.CreateShopItems(unsavedItems).subscribe(
+        items => {
+          console.log(items);
+        },
+        err => {
+          console.error(err);
+        }
+      )
+
+    }
+
   }
 }

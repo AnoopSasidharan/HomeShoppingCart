@@ -1,10 +1,14 @@
 <section>
   <div class="row border border-primary">
-    <div class="col-7">{{currentItem.name}}</div>
-    <div class="col-4">
-      <span (click)="addQuantity(1)"><i class="bi bi-plus-lg text-success me-1"></i></span>
-      <span>{{currentItem.quantity}}</span>
+    <div class="col-7"><span>{{currentItem.itemName}}</span> </div>
+    <div class="col-3">
       <span (click)="addQuantity(-1)"><i class="bi bi-dash-lg text-danger ms-1"></i></span>
+      <span>{{currentItem.quantity}}</span>
+      <span (click)="addQuantity(1)"><i class="bi bi-plus-lg text-success me-1"></i></span>
+    </div>
+    <div class="col-2">
+      <label *ngIf="!currentItem.id" style="height:inherit; margin:1px; background-color:orangered; color:white" >UnSaved</label>
+      <label *ngIf="currentItem.id && currentItem.id>1" style="height:inherit; margin:1px; background-color:forestgreen; color:white">Saved</label>
     </div>
   </div>
 </section>

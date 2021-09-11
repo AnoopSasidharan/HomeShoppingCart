@@ -27,11 +27,11 @@ export class SummaryComponent implements OnInit {
     this.routeParams.data.subscribe(
       data => {
         this.availbaleShops = data.availShops;
-        console.table(this.availbaleShops);
-        console.table(data.availShops);
-        for (let i = 0; i < this.availbaleShops.length; i++) {
-          console.log(this.availbaleShops[i].name);
-        }
+        //console.table(this.availbaleShops);
+        //console.table(data.availShops);
+        //for (let i = 0; i < this.availbaleShops.length; i++) {
+        //  console.log(this.availbaleShops[i].name);
+        //}
       }
     );
 
@@ -63,10 +63,12 @@ export class SummaryComponent implements OnInit {
     return this.availbaleShops.filter(option => option.name.toLowerCase().includes(filterValue));
   }
   AddShop(): void {
+    this.dataService.LoadAllItems().subscribe();
     var selectedShop = this.selectedShopControl.value;
     if (selectedShop["name"]) {
       this.shops.push(selectedShop);
       this.IsShopEditing = false;
+      this.selectedShopControl.setValue(``);
     } else {
       //new shop that needs to be added to db
       let newShop = new Shop();
@@ -77,6 +79,7 @@ export class SummaryComponent implements OnInit {
           this.availbaleShops.push(savedShop);
           this.shops.push(savedShop);
           this.IsShopEditing = false;
+          this.selectedShopControl.setValue(``);
         });
     }
     

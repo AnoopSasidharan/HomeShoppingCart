@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICart } from '../shared/Models/icart';
+import { Shop } from '../shared/Models/shop';
 import { DataService } from '../shared/services/data.service';
 
 @Component({
@@ -9,9 +10,12 @@ import { DataService } from '../shared/services/data.service';
 })
 export class CartComponent implements OnInit {
 
+  shops: Shop[] = []; // temp;
+
   constructor(private dataservice: DataService) { }
 
   ngOnInit(): void {
+   // this.shops = this.dataservice.currentCart.shops;
   }
 
  

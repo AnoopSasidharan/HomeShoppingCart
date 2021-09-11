@@ -2,6 +2,7 @@
 using HomeShoppingCart.Data.Entity;
 using HomeShoppingCart.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace HomeShoppingCart.Controllers
@@ -41,6 +42,7 @@ namespace HomeShoppingCart.Controllers
         [HttpPost()]
         public async Task<ActionResult> CreateCart([FromBody] Cart cart)
         {
+            cart.CreatedDate = DateTime.Now;
             this._cartRepository.AddCart(cart);
             await _cartRepository.SaveRepositroyAsync();
 

@@ -3,14 +3,16 @@ using System;
 using HomeShoppingCart.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HomeShoppingCart.Migrations
 {
     [DbContext(typeof(CartDbContext))]
-    partial class CartDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210911124512_modifytables")]
+    partial class modifytables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,9 +81,6 @@ namespace HomeShoppingCart.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsBagged")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("ItemId")
                         .HasColumnType("INTEGER");
 
@@ -91,9 +90,6 @@ namespace HomeShoppingCart.Migrations
                     b.Property<int>("ShopId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
@@ -102,7 +98,7 @@ namespace HomeShoppingCart.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.ToTable("ShopItems");
+                    b.ToTable("ShopItem");
                 });
 
             modelBuilder.Entity("HomeShoppingCart.Data.Entity.ShopItem", b =>

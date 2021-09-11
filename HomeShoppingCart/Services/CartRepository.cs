@@ -59,5 +59,17 @@ namespace HomeShoppingCart.Services
         {
             _cartDbContext.Items.Add(item);
         }
+        public async Task<IEnumerable<ShopItem>> GetShopItemsAsync()
+        {
+            return await _cartDbContext.ShopItems.Where(s => s.Cart.CompletedDate.HasValue == false).ToListAsync();
+        }
+        public async Task<ShopItem> GetShopItemByIdAsync(int id)
+        {
+            return await _cartDbContext.ShopItems.FindAsync(id);
+        }
+        public void AddShopItem(ShopItem item)
+        {
+            _cartDbContext.ShopItems.Add(item);
+        }
     }
 }
