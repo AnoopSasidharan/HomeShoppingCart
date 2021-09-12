@@ -1,5 +1,6 @@
 ﻿using HomeShoppingCart.Data;
 using HomeShoppingCart.Data.Entity;
+using HomeShoppingCart.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -59,9 +60,20 @@ namespace HomeShoppingCart.Services
         {
             _cartDbContext.Items.Add(item);
         }
-        public async Task<IEnumerable<ShopItem>> GetShopItemsAsync()
+        public async Task<IEnumerable<ShopItem>> GetShopItemsAsync(ItemsQueryParameters itemsQueryParameters)
         {
-            return await _cartDbContext.ShopItems.Where(s => s.Cart.CompletedDate.HasValue == false).ToListAsync();
+            var shopItems = _cartDbContext.ShopItems as IQueryable<ShopItem>;
+            if(itemsQueryParameters.CartId.HasValue)
+            {
+                shopItems = shopItems.Where(s => s.CartId == itemsQueryParameters.CartId);
+            }
+            if(itemsQueryParameters.ShopId.HasValue)
+            {
+                shopItems = shopItems.Where(s => s.ShopId == itemsQueryParameters.ShopId);
+            }
+            //return await _cartDbContext.ShopItems.Where(s => s.Cart.CompletedDate.HasValue == false).ToListAsync();
+
+            return await shopItems.ToListAsync();
         }
         public async Task<ShopItem> GetShopItemByIdAsync(int id)
         {

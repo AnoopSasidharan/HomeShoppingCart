@@ -23,21 +23,25 @@ namespace HomeShoppingCart.Controllers
             this._mapper = mapper;
         }
         [HttpGet()]
-        public async Task<ActionResult<ICollection<ShopItem>>> GetShopItems()
+        public async Task<ActionResult<ICollection<ShopItem>>> GetShopItems([FromQuery] ItemsQueryParameters itemsQueryParameters)
         {
-            var shopItems = await _cartRepository.GetShopItemsAsync();
+            var shopItems = await _cartRepository.GetShopItemsAsync(itemsQueryParameters);
 
             return Ok(shopItems);
         }
         [HttpGet("{Id}", Name = "GetShopItemById")]
-        public async Task<ActionResult<ICollection<ShopItem>>> GetShopItemById(int Id)
+        public async Task<ActionResult<ICollection<ShopItem>>> GetShopItemByIds(int Id)
         {
-            var shopItems = await _cartRepository.GetShopItemsAsync();
+            var shopItem = await _cartRepository.GetShopItemByIdAsync(Id);
+            if(shopItem==null)
+            {
+                return NotFound();
+            }
 
-            return Ok(shopItems);
+            return Ok(shopItem);
         }
         [HttpPost()]
-        public async Task<ActionResult> CreateShopItem([FromBody] ShopItemCreateDto shopItemCreateDto)
+        public async Task<ActionResult> CreateShopItem([FromBody]  ShopItemCreateDto shopItemCreateDto)
         {
             var shopItem = _mapper.Map<ShopItem>(shopItemCreateDto);
             shopItem.CreatedDate = DateTime.Now;

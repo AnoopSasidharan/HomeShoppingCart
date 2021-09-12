@@ -89,30 +89,25 @@ export class ShopComponent implements OnInit {
     return this.dataservice.allItemsStore.filter(option => option.name.toLowerCase().includes(filterValue));
   }
   addToCart(): void {
-
-    //console.table(this.currentShop.shopItems);
     var unsavedItems = this.currentShop.shopItems.filter(i => (!i.id) || (i.id < 1));
 
-    //console.log(this.currentShop.id);
-    
-    
     if (!this.cartService.userCart) {
       this.cartService.createNewCart().subscribe(
         data => {
-          //console.log(` cart id ${this.cartService.currentCart.CurrentCart.Id}`);
           console.log(data);
           unsavedItems.forEach(item => {
             item.cartId = this.cartService.userCart.CurrentCart.id;
             item.shopId = this.currentShop.id;
             item.cartId = this.cartService.userCart.CurrentCart.id
-
           });
-
-          console.log(unsavedItems);
-
           this.dataservice.CreateShopItems(unsavedItems).subscribe(
             items => {
-              console.log(items);
+              // console.log(`items saved`);
+              // console.log(items);
+              // this.updateSavedItems(this.cartService.userCart.CurrentCart.id, this.currentShop.id);
+              for (let i = 0; i < unsavedItems.length; i++) {
+                unsavedItems[i].id = items[i].id;
+              }
             },
             err => {
               console.error(err);
@@ -124,7 +119,6 @@ export class ShopComponent implements OnInit {
         }
       )
     } else {
-
       unsavedItems.forEach(item => {
         item.cartId = this.cartService.userCart.CurrentCart.id;
         item.shopId = this.currentShop.id
@@ -132,14 +126,29 @@ export class ShopComponent implements OnInit {
 
       this.dataservice.CreateShopItems(unsavedItems).subscribe(
         items => {
-          console.log(items);
+          // console.log(items);
+          // this.updateSavedItems(this.cartService.userCart.CurrentCart.id, this.currentShop.id);
+          for (let i = 0; i < unsavedItems.length; i++) {
+            unsavedItems[i].id = items[i].id;
+          }
+          // this.updateSavedItems(this.cartService.userCart.CurrentCart.id, this.currentShop.id);
         },
         err => {
           console.error(err);
         }
       )
-
     }
 
+  }
+  private updateSavedItems(cartId: number, shopId: number): void {
+    let quryParams = {
+      shopId: shopId,
+      cartId: cartId
+    };
+    this.dataservice.getShopItems(quryParams).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
   }
 }

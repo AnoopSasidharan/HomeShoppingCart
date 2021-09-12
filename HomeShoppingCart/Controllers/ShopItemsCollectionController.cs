@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using HomeShoppingCart.Data.Entity;
+using HomeShoppingCart.Helpers;
+
 using HomeShoppingCart.Models;
 using HomeShoppingCart.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -27,12 +29,18 @@ namespace HomeShoppingCart.Controllers
 
         //}
 
-        //public async Task<ActionResult<IEnumerable<ShopItem>>> ShopItemsByIdsGet()
-        //{
-
-        //}
+        [HttpGet("({ids})", Name = "ShopItemsByIdsGet")]
+        public  ActionResult ShopItemsByIdsGet([FromRoute][ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
+        {
+            var ret = new int[]
+            {
+                1,
+                2
+            };
+            return Ok(ret);
+        }
         [HttpPost()]
-        public async Task<ActionResult> CreateShopItems([FromBody] IEnumerable<ShopItemCreateDto> shopItemCreateDtos)
+        public async Task<ActionResult> CreateShopItems([FromBody]  IEnumerable <ShopItemCreateDto> shopItemCreateDtos)
         {
             var shopItems = _mapper.Map<IEnumerable<ShopItem>>(shopItemCreateDtos);
             foreach (var shopItem in shopItems)
@@ -41,7 +49,11 @@ namespace HomeShoppingCart.Controllers
                 _cartRepository.AddShopItem(shopItem);
             }
             await _cartRepository.SaveRepositroyAsync();
-            return Ok();
+
+            var Ids = shopItems.Select(s => s.Id);
+            var IdsJoined = string.Join(",", Ids);
+
+            return CreatedAtRoute("ShopItemsByIdsGet", new { ids = IdsJoined }, shopItems);
         }
     }
 }

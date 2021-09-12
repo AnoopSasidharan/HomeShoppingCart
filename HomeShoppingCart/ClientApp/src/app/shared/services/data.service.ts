@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { EMPTY } from 'rxjs';
@@ -61,5 +61,13 @@ export class DataService implements Resolve<any> {
   CreateShopItems(shopItems: Shopitem[]): Observable<any> {
     console.table(shopItems);
     return this.http.post<Shopitem[]>(this._baseUrl + `api/shopitemscollections`, shopItems);
+  }
+  getShopItems(queryparams: any): Observable<any> {
+
+    let _params = new HttpParams();
+    _params = _params.append('ShopId', queryparams.shopId);
+    _params = _params.append('CartId', queryparams.cartId);
+    
+    return this.http.get(this._baseUrl + `api/shopitems`, { params: _params });
   }
 }
