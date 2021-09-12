@@ -24,20 +24,18 @@ namespace HomeShoppingCart.Controllers
             this._mapper = mapper;
             this._cartRepository = cartRepository;
         }
-        //public async Task<ActionResult<IEnumerable<ShopItem>>> ShopItemsGet()
-        //{
+        public async Task<ActionResult<ICollection<ShopItemDto>>> ShopItemsGet([FromQuery] ItemsQueryParameters itemsQueryParameters)
+        {
+            var shopItems = await _cartRepository.GetShopItemsAsync(itemsQueryParameters);
 
-        //}
+            return Ok(_mapper.Map<IEnumerable<ShopItemDto>>(shopItems));
+        }
 
         [HttpGet("({ids})", Name = "ShopItemsByIdsGet")]
-        public  ActionResult ShopItemsByIdsGet([FromRoute][ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
+        public async Task<ActionResult<IEnumerable<ShopItemDto>>> ShopItemsByIdsGet([FromRoute][ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
         {
-            var ret = new int[]
-            {
-                1,
-                2
-            };
-            return Ok(ret);
+            var shopItems = await _cartRepository.GetShopItemByIdsAsync(ids);
+            return Ok(_mapper.Map<IEnumerable<ShopItemDto>>(shopItems));
         }
         [HttpPost()]
         public async Task<ActionResult> CreateShopItems([FromBody]  IEnumerable <ShopItemCreateDto> shopItemCreateDtos)
@@ -46,6 +44,10 @@ namespace HomeShoppingCart.Controllers
             foreach (var shopItem in shopItems)
             {
                 shopItem.CreatedDate = DateTime.Now;
+                //var item = await _cartRepository.GetItemByIdAsync(shopItem.ItemId);
+                //var shop = await _cartRepository.GetShopByIdAsync(shopItem.ShopId);
+                //shopItem.Shop = shop;
+                //shopItem.Item = item;
                 _cartRepository.AddShopItem(shopItem);
             }
             await _cartRepository.SaveRepositroyAsync();

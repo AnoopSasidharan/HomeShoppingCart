@@ -23,11 +23,11 @@ namespace HomeShoppingCart.Controllers
             this._mapper = mapper;
         }
         [HttpGet()]
-        public async Task<ActionResult<ICollection<ShopItem>>> GetShopItems([FromQuery] ItemsQueryParameters itemsQueryParameters)
+        public async Task<ActionResult<ICollection<ShopItemDto>>> GetShopItems([FromQuery] ItemsQueryParameters itemsQueryParameters)
         {
             var shopItems = await _cartRepository.GetShopItemsAsync(itemsQueryParameters);
 
-            return Ok(shopItems);
+            return Ok(_mapper.Map<IEnumerable<ShopItemDto>>(shopItems));
         }
         [HttpGet("{Id}", Name = "GetShopItemById")]
         public async Task<ActionResult<ICollection<ShopItem>>> GetShopItemByIds(int Id)

@@ -63,17 +63,31 @@ namespace HomeShoppingCart.Services
         public async Task<IEnumerable<ShopItem>> GetShopItemsAsync(ItemsQueryParameters itemsQueryParameters)
         {
             var shopItems = _cartDbContext.ShopItems as IQueryable<ShopItem>;
-            if(itemsQueryParameters.CartId.HasValue)
+            if(itemsQueryParameters.GetLatestCartOnly)
             {
-                shopItems = shopItems.Where(s => s.CartId == itemsQueryParameters.CartId);
+                var cart = _cartDbContext.Carts.Where(c => c.CompletedDate == null).OrderByDescending(c=>c.CreatedDate);
+                var topCart = cart.FirstOrDefault();
+
+                shopItems= shopItems.Include(s => s.Shop).Where(s => s.CartId == topCart.Id);
+                shopItems = shopItems.Include(s => s.Item);
             }
-            if(itemsQueryParameters.ShopId.HasValue)
+            else
             {
-                shopItems = shopItems.Where(s => s.ShopId == itemsQueryParameters.ShopId);
+                if (itemsQueryParameters.CartId.HasValue)
+                {
+                    shopItems = shopItems.Where(s => s.CartId == itemsQueryParameters.CartId);
+                }
+                if (itemsQueryParameters.ShopId.HasValue)
+                {
+                    shopItems = shopItems.Where(s => s.ShopId == itemsQueryParameters.ShopId);
+                }
             }
-            //return await _cartDbContext.ShopItems.Where(s => s.Cart.CompletedDate.HasValue == false).ToListAsync();
 
             return await shopItems.ToListAsync();
+        }
+        public async Task<IEnumerable<ShopItem>> GetShopItemByIdsAsync(IEnumerable<int> ids)
+        {
+            return await _cartDbContext.ShopItems.Where(si => ids.Contains(si.Id)).ToListAsync();
         }
         public async Task<ShopItem> GetShopItemByIdAsync(int id)
         {

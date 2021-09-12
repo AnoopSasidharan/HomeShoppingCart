@@ -27,6 +27,7 @@ namespace HomeShoppingCart
             services.AddDbContext<CartDbContext>(opt =>
             {
                 opt.UseSqlite(Configuration.GetConnectionString("ShoppingCartDb"));
+                opt.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
             });
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

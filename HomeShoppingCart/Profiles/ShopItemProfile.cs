@@ -13,6 +13,8 @@ namespace HomeShoppingCart.Profiles
         public ShopItemProfile()
         {
             CreateMap<ShopItemCreateDto, ShopItem>();
+            CreateMap<ShopItem, ShopItemDto>();
+                //.ForMember("ShopName", dest => dest.MapFrom(src => src.Shop.Name));
         }
     }
 }

@@ -11,5 +11,7 @@ namespace HomeShoppingCart.Data.Entity
         public string Name { get; set; }
         public string Description { get; set; }
         public int AccessCount { get; set; }
+
+        //public ICollection<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
     }
 }

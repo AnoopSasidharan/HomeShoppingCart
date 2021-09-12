@@ -9,5 +9,6 @@ namespace HomeShoppingCart.Models
     {
         public int? CartId { get; set; }
         public int? ShopId { get; set; }
+        public bool GetLatestCartOnly { get; set; } = true;
     }
 }
