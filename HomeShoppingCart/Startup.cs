@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using System;
 
 namespace HomeShoppingCart
@@ -29,7 +30,11 @@ namespace HomeShoppingCart
                 opt.UseSqlite(Configuration.GetConnectionString("ShoppingCartDb"));
                 opt.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
             });
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

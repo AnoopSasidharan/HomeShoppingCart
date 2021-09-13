@@ -26,6 +26,7 @@ namespace HomeShoppingCart.Controllers
         }
         public async Task<ActionResult<ICollection<ShopItemDto>>> ShopItemsGet([FromQuery] ItemsQueryParameters itemsQueryParameters)
         {
+            
             var shopItems = await _cartRepository.GetShopItemsAsync(itemsQueryParameters);
 
             return Ok(_mapper.Map<IEnumerable<ShopItemDto>>(shopItems));

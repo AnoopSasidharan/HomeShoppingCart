@@ -14,7 +14,9 @@ namespace HomeShoppingCart.Profiles
         {
             CreateMap<ShopItemCreateDto, ShopItem>();
             CreateMap<ShopItem, ShopItemDto>();
-                //.ForMember("ShopName", dest => dest.MapFrom(src => src.Shop.Name));
+            //.ForMember("ShopName", dest => dest.MapFrom(src => src.Shop.Name));
+            CreateMap<ShopItemUpdateDto, ShopItem>();
+            CreateMap<ShopItem, ShopItemUpdateDto>();
         }
     }
 }

@@ -1,3 +1,12 @@
-<div *ngFor="let shop of shops">
-  {{shop.name}}
+<div class="card">
+  <div class="card-header" *ngFor="let cartelem of cartElems">
+    {{cartelem.shop}}
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let item of cartelem.items" >{{item.itemName}} <span>Quantity: {{item.quantity}}</span> <button [disabled]="item.isBagged" style="display:inline-block;" class="btn btn-primary" (click)="updateItemStatus(item)">Mark Completed</button> </li>
+      </ul>
+    </div>
+
+    
+  </div>
 </div>

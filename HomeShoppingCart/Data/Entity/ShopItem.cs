@@ -18,5 +18,6 @@ namespace HomeShoppingCart.Data.Entity
         public int Quantity { get; set; }
         public string Status { get; set; }
         public bool IsBagged { get; set; }
+        public DateTime CompleteDate { get; set; }
     }
 }
