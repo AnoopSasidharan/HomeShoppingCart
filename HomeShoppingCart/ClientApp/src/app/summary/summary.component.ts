@@ -3,8 +3,10 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Cart } from '../shared/Models/cart';
 import { Item } from '../shared/Models/item';
 import { Shop } from '../shared/Models/shop';
+import { CartService } from '../shared/services/cart.service';
 import { DataService } from '../shared/services/data.service';
 
 @Component({
@@ -19,14 +21,21 @@ export class SummaryComponent implements OnInit {
   IsShopEditing = false;
   selectedShopControl = new FormControl();
   availbaleShops: Shop[] = [];
-  
-  constructor(private dataService: DataService, private routeParams: ActivatedRoute) { }
+
+  constructor(private dataService: DataService, private routeParams: ActivatedRoute, private cartService: CartService) { }
 
   ngOnInit(): void {
 
     this.routeParams.data.subscribe(
       data => {
-        this.availbaleShops = data.availShops;
+        this.availbaleShops = data.initData[0];
+        console.log(data.initData[0]);
+        console.log(data.initData[1]);
+        let currentCart = data.initData[1];
+        if (!this.cartService.userCart) {
+          this.cartService.userCart = new Cart();
+        }
+        this.cartService.userCart.CurrentCart = currentCart;
         //console.table(this.availbaleShops);
         //console.table(data.availShops);
         //for (let i = 0; i < this.availbaleShops.length; i++) {

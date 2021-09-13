@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { EMPTY } from 'rxjs';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,6 +10,7 @@ import { ICart } from '../Models/icart';
 import { Item } from '../Models/item';
 import { Shop } from '../Models/shop';
 import { Shopitem } from '../Models/shopitem';
+import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +18,18 @@ import { Shopitem } from '../Models/shopitem';
 export class DataService implements Resolve<any> {
   _baseUrl: string;
   allItemsStore: Item[] = [];
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private cartService: CartService) {
     this._baseUrl = baseUrl;
   }
   resolve(): Observable<any> {
-    return this.GetAllShops();
+    return forkJoin([
+      this.GetAllShops(),
+      this.cartService.getCarts({ getLatestCartOnly: true })
+    ]);
+
+    return 
   }
+  
 
   CreatNewCart(cart: ICart): Observable<any> {
     return this.http.post<ICart>(this._baseUrl + `api/cart`, cart);
@@ -59,7 +67,6 @@ export class DataService implements Resolve<any> {
     return this.http.post<Shop>(this._baseUrl + `api/items`, item);
   }
   CreateShopItems(shopItems: Shopitem[]): Observable<any> {
-    console.table(shopItems);
     return this.http.post<Shopitem[]>(this._baseUrl + `api/shopitemscollections`, shopItems);
   }
   getShopItems(queryparams: any): Observable<any> {
@@ -70,4 +77,19 @@ export class DataService implements Resolve<any> {
     
     return this.http.get(this._baseUrl + `api/shopitems`, { params: _params });
   }
+  getAllShopItems(queryparams: any): Observable<any> {
+
+    let _params = new HttpParams();
+    if (queryparams.shopId) {
+      _params = _params.append('ShopId', queryparams.shopId);
+    }
+    if (queryparams.cartId) {
+      _params = _params.append('CartId', queryparams.cartId);
+    }
+    if (queryparams.getLatestCartOnly) {
+      _params = _params.append('GetLatestCartOnly', queryparams.getLatestCartOnly);
+    }
+    return this.http.get(this._baseUrl + `api/shopitemscollections`, { params: _params });
+  }
+  
 }

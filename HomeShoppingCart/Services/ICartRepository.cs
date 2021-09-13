@@ -8,7 +8,7 @@ namespace HomeShoppingCart.Services
     public interface ICartRepository
     {
         void AddCart(Cart cart);
-        Task<IEnumerable<Cart>> GetCartsAsync();
+        Task<IEnumerable<Cart>> GetCartsAsync(CartQueryParams cartQueryParams);
         Task<Cart> GetCartsByIdAsync(int Id);
         Task<bool> SaveRepositroyAsync();
         Task<IEnumerable<Shop>> GetShopsAsync();

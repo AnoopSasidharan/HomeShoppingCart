@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -32,5 +32,11 @@ export class CartService {
             return val;
           })
         );
+  }
+  getCarts(queryParams: any): Observable<any> {
+    let _params = new HttpParams();
+    _params = _params.append('getLatestCartOnly', queryParams.getLatestCartOnly);
+
+    return this.http.get(this._baseUrl + `api/cart`, { params: _params });
   }
 }

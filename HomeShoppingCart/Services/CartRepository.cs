@@ -17,9 +17,18 @@ namespace HomeShoppingCart.Services
         {
             this._cartDbContext = cartDbContext;
         }
-        public async Task<IEnumerable<Cart>> GetCartsAsync()
+        public async Task<IEnumerable<Cart>> GetCartsAsync(CartQueryParams cartQueryParams)
         {
-            return await this._cartDbContext.Carts.ToListAsync();
+            var carts  = _cartDbContext.Carts as IQueryable<Cart>;
+            if (cartQueryParams.GetLatestCartOnly)
+            {
+                var cart = _cartDbContext.Carts.Where(c => c.CompletedDate == null).OrderByDescending(c => c.CreatedDate);
+                var topCart = cart.FirstOrDefault();
+
+                carts = carts.Where(c => c.Id == topCart.Id);
+            }
+
+            return await carts.ToListAsync();
         }
         public async Task<Cart> GetCartsByIdAsync(int Id)
         {

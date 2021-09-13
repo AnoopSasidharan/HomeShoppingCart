@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HomeShoppingCart.Data.Entity;
+using HomeShoppingCart.Models;
 using HomeShoppingCart.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,9 +23,9 @@ namespace HomeShoppingCart.Controllers
 
 
         [HttpGet()]
-        public async Task<ActionResult<Cart>> GetCarts()
+        public async Task<ActionResult<Cart>> GetCarts([FromQuery] CartQueryParams cartQueryParams)
         {
-            var carts = await _cartRepository.GetCartsAsync();
+            var carts = await _cartRepository.GetCartsAsync(cartQueryParams);
             return Ok(carts);
         }
 

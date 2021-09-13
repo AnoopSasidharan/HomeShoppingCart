@@ -15,7 +15,17 @@ export class CartComponent implements OnInit {
   constructor(private dataservice: DataService) { }
 
   ngOnInit(): void {
-   // this.shops = this.dataservice.currentCart.shops;
+    let shopitemsParams = {
+      gGetLatestCartOnly: true
+    }
+    this.dataservice.getAllShopItems(shopitemsParams).subscribe(
+      data => {
+        console.log(data);
+      },
+      err => {
+
+      }
+    )
   }
 
  

@@ -11,7 +11,7 @@ import { SummaryComponent } from './summary/summary.component';
 
 const approutes: Routes = [
   { path: 'cart', component: CartComponent },
-  { path: 'summary', component: SummaryComponent, resolve: { availShops: DataService }, },
+  { path: 'summary', component: SummaryComponent, resolve: { initData: DataService }, },
   { path: 'items', component: ItemsComponent },
   { path: '', redirectTo: '/summary', pathMatch:'full' }
 ];
