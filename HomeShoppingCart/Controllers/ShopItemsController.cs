@@ -70,13 +70,25 @@ namespace HomeShoppingCart.Controllers
             var shopItemToUpdate = _mapper.Map<ShopItemUpdateDto>(shopItem);
             shopItemUpdateDto.ApplyTo(shopItemToUpdate, ModelState );
 
-            //shopItem =_mapper.Map<ShopItem>(shopItemToUpdate);
             _mapper.Map(shopItemToUpdate, shopItem);
             if (shopItem.IsBagged && !completed)
             {
                 shopItem.CompleteDate = DateTime.Now;
             }
 
+            await _cartRepository.SaveRepositroyAsync();
+
+            return NoContent();
+        }
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult> DeleteShopItem(int Id)
+        {
+            var shopItem = await _cartRepository.GetShopItemByIdAsync(Id);
+            if(shopItem==null)
+            {
+                return NotFound();
+            }
+            _cartRepository.RemoveShopItem(shopItem);
 
             await _cartRepository.SaveRepositroyAsync();
 

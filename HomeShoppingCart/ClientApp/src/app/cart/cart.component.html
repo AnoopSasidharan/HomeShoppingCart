@@ -6,7 +6,5 @@
         <li class="list-group-item" *ngFor="let item of cartelem.items" >{{item.itemName}} <span>Quantity: {{item.quantity}}</span> <button [disabled]="item.isBagged" style="display:inline-block;" class="btn btn-primary" (click)="updateItemStatus(item)">Mark Completed</button> </li>
       </ul>
     </div>
-
-    
   </div>
 </div>

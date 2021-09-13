@@ -21,5 +21,6 @@ namespace HomeShoppingCart.Services
         Task<IEnumerable<ShopItem>> GetShopItemByIdsAsync(IEnumerable<int> ids);
         Task<ShopItem> GetShopItemByIdAsync(int id);
         void AddShopItem(ShopItem item);
+        void RemoveShopItem(ShopItem item);
     }
 }

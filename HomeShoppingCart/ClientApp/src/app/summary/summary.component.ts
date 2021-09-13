@@ -29,34 +29,20 @@ export class SummaryComponent implements OnInit {
     this.routeParams.data.subscribe(
       data => {
         this.availbaleShops = data.initData[0];
-        console.log(data.initData[0]);
-        console.log(data.initData[1]);
         let currentCart = data.initData[1];
         if (!this.cartService.userCart) {
           this.cartService.userCart = new Cart();
         }
         this.cartService.userCart.CurrentCart = currentCart;
-        //console.table(this.availbaleShops);
-        //console.table(data.availShops);
-        //for (let i = 0; i < this.availbaleShops.length; i++) {
-        //  console.log(this.availbaleShops[i].name);
-        //}
       }
     );
 
-    //let shop = new Shop();
-    //shop.Name = "Costco";
-    //shop.Id = 1;
-    //this.availbaleShops.push(shop);
-    
     this.filteredOptions = this.selectedShopControl.valueChanges
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : value.name),
         map(name => name ? this._filter(name) : this.availbaleShops.slice())
       );
-    
-
   }
   addNewShop(): void {
     this.IsShopEditing = true;

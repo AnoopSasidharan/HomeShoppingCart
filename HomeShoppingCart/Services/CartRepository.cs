@@ -106,5 +106,9 @@ namespace HomeShoppingCart.Services
         {
             _cartDbContext.ShopItems.Add(item);
         }
+        public void RemoveShopItem(ShopItem item)
+        {
+            _cartDbContext.ShopItems.Remove(item);
+        }
     }
 }
