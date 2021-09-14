@@ -24,8 +24,14 @@ namespace HomeShoppingCart.Services
             {
                 var cart = _cartDbContext.Carts.Where(c => c.CompletedDate == null).OrderByDescending(c => c.CreatedDate);
                 var topCart = cart.FirstOrDefault();
-
-                carts = carts.Where(c => c.Id == topCart.Id);
+                if(topCart ==null)
+                {
+                    carts = carts.Where(c => 1 == 0);
+                }
+                else
+                {
+                    carts = carts.Where(c => c.Id == topCart.Id);
+                }
             }
 
             return await carts.ToListAsync();

@@ -25,7 +25,7 @@ namespace HomeShoppingCart.Controllers
         [HttpGet()]
         public async Task<ActionResult<Cart>> GetCarts([FromQuery] CartQueryParams cartQueryParams)
         {
-            var carts = await _cartRepository.GetCartsAsync(cartQueryParams);
+            var carts = await _cartRepository.GetCartsAsync(cartQueryParams);   
             return Ok(carts);
         }
 
