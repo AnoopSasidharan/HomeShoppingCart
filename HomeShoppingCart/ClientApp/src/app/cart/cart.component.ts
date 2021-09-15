@@ -24,22 +24,24 @@ export class CartComponent implements OnInit {
     this.dataservice.getAllShopItems(shopitemsParams).subscribe(
       data => {
         for (let i = 0; i < data.length; i++) {
-          this.mySet.add(data[i].shopName);
-        }
-        this.mySet.forEach(val => {
-          this.cartElems.push({
-            shop: val,
-            items: []
-          });
-        });
-
-        for (let i = 0; i < data.length; i++) {
-          var shop = this.cartElems.find(s => s.shop === data[0].shopName);
-          if (shop) {
-            shop.items.push(data[i]);
+          let shopName = data[i].shopName;
+          var filter = this.shops.some(s => s.name === shopName);
+          if (!filter) {
+            let newShop = new Shop(data[i].shopId, shopName);
+            this.shops.push(newShop);
           }
         }
-        console.log(this.cartElems);
+
+        for (let i = 0; i < data.length; i++) {
+          var shopId = data[i].shopId;
+          var shop = this.shops.find(s => s.id === shopId);
+          if (!shop)
+            continue;
+          if (!shop.shopItems) {
+            shop.shopItems = [];
+          }
+          shop.shopItems.push(data[i]);
+        }
       },
       err => {
 

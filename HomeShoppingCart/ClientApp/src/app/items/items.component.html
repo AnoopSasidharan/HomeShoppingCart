@@ -1,4 +1,4 @@
-<section>
+<!--<section>
   <div class="row border border-primary">
     <div class="col-7"><span>{{currentItem.itemName}}</span> </div>
     <div class="col-3">
@@ -11,4 +11,18 @@
       <label *ngIf="currentItem.id && currentItem.id>1" style="height:inherit; margin:1px; background-color:forestgreen; color:white">Saved</label>
     </div>
   </div>
+</section>-->
+<section class="card text-primary">
+  <!--<header>
+    <h4>{{currentItem.itemName}}</h4>
+  </header>-->
+  <div class="card-header">
+    <h6>{{currentItem.itemName}}</h6>
+  </div>
+  <section class="card-body item-details">
+    <div>Buying From: {{currentItem.shopName}}</div>
+    <div>Quantity:{{currentItem.quantity}}</div>
+    <!--<button class="btn btn-warning">Delete</button>-->
+    <a href="#" class="link-danger text-danger">Delete</a>
+  </section>
 </section>

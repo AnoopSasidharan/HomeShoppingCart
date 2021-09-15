@@ -23,6 +23,7 @@ export class CartService {
       .pipe(
         map((val) => {
           let cart = val as ICart;
+          console.log(cart);
           if (cart) {
             if (!this.userCart) {
               this.userCart = new Cart();

@@ -50,16 +50,33 @@ export class ShopComponent implements OnInit {
     }
 
     if (selectedItem["name"]) {
+      let index = this.currentShop.shopItems.findIndex(i => i.itemId == selectedItem.id);
+      if (index > -1) {
+        this.selectedItemControl.setValue(``);
+        this.onCancel();
+        return;
+      }
       shopItem.itemId = sItem.id;
       shopItem.isBagged = false;
       shopItem.itemName = sItem.name;
       shopItem.itemDescription = sItem.description;
+      shopItem.shopName = this.currentShop.name;
 
       this.currentShop.shopItems.push(shopItem);
       
       this.selectedItemControl.setValue(``);
     } else {
       //add it to db
+      if (selectedItem?.Trim().length == 0)
+        return;
+
+      let index = this.currentShop.shopItems.findIndex(i => i.itemName == selectedItem);
+      if (index > -1) {
+        this.selectedItemControl.setValue(``);
+        this.onCancel();
+        return;
+      }
+
       let newItem = new Item();
       newItem.name = selectedItem;
       this.dataservice.CreateNewItem(newItem).subscribe(

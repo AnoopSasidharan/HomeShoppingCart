@@ -2,8 +2,10 @@ import { Item } from "./item";
 import { Shopitem } from "./shopitem";
 
 export class Shop {
-  id: number;
-  name: string;
   isEditMode: boolean;
-  shopItems: Shopitem[] = [];
+  shopItems: Shopitem[];
+  constructor(public id: number, public name: string) {
+    this.isEditMode = false;
+    this.shopItems = [];
+  }
 }
