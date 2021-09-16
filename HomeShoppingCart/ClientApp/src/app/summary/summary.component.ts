@@ -16,9 +16,7 @@ import { DataService } from '../shared/services/data.service';
 })
 export class SummaryComponent implements OnInit, OnDestroy {
   shops: Shop[] = [];
-  //@Input() shops: Shop[];
-
-
+  
   IsShopEditing = false;
   selectedShopControl = new FormControl();
   availbaleShops: Shop[] = [];
@@ -56,6 +54,8 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.shops.forEach(shop => {
         shop.mode = `summary`;
       });
+    } else {
+      this.shops = [];
     }
   }
   addNewShop(): void {
@@ -75,10 +75,8 @@ export class SummaryComponent implements OnInit, OnDestroy {
     this.dataService.LoadAllItems().subscribe();
     var selectedShop = this.selectedShopControl.value;
     if (selectedShop["name"]) {
-      console.log(selectedShop);
       let index = this.shops.findIndex(s => s.id === selectedShop.id);
       if (index > -1) {
-        console.log(`added already`);
         this.selectedShopControl.setValue(``);
         this.onCancel();
         return;
