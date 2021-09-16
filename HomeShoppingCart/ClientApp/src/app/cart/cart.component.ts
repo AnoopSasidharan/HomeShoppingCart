@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ICart } from '../shared/Models/icart';
 import { Shop } from '../shared/Models/shop';
+import { CartService } from '../shared/services/cart.service';
 import { DataService } from '../shared/services/data.service';
 
 @Component({
@@ -14,7 +16,7 @@ export class CartComponent implements OnInit {
   mySet = new Set();
   cartElems: any[] = [];
 
-  constructor(private dataservice: DataService) { }
+  constructor(private dataservice: DataService, private cartService: CartService, private route: Router) { }
 
   ngOnInit(): void {
     
@@ -28,6 +30,7 @@ export class CartComponent implements OnInit {
           var filter = this.shops.some(s => s.name === shopName);
           if (!filter) {
             let newShop = new Shop(data[i].shopId, shopName);
+            newShop.mode = `cart`;
             this.shops.push(newShop);
           }
         }
@@ -57,6 +60,10 @@ export class CartComponent implements OnInit {
       }
 
     )
+  }
 
+  editCart(): void {
+    this.cartService.changeShops(this.shops);
+    this.route.navigate([`/summary`]);
   }
 }

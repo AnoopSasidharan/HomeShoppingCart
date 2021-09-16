@@ -1,12 +1,18 @@
-<div class="card">
-  <div  *ngFor="let shop of shops">
-    <div class="card-header">
-      <h5 class="card-title"> {{shop.name}}</h5>
+<button class="btn btn-primary m-1" (click)="editCart()">Edit Cart</button>
+<div class="card bg-dark">
+  <div *ngFor="let shop of shops">
+    <div >
+      <div class="card-header bg-secondary">
+        <h5 class="card-title"> {{shop.name}}</h5>
+      </div>
+      
+      <app-items [currentItem]="item" [mode]="shop.mode" *ngFor="let item of shop.shopItems"></app-items>
     </div>
-    <div class="card-body">
+    
+    <!--<div class="card-body">
       <ul class="list-group list-group-flush">
         <li class="list-group-item" *ngFor="let item of shop.shopItems">{{item.itemName}} <span>Quantity: {{item.quantity}}</span> <button [disabled]="item.isBagged" style="display:inline-block;" class="btn btn-primary" (click)="updateItemStatus(item)">Mark Completed</button> </li>
       </ul>
-    </div>
+    </div>-->
   </div>
 </div>

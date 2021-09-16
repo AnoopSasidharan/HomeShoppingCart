@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Cart } from '../shared/Models/cart';
@@ -13,13 +14,15 @@ import { DataService } from '../shared/services/data.service';
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.css']
 })
-export class SummaryComponent implements OnInit {
+export class SummaryComponent implements OnInit, OnDestroy {
   shops: Shop[] = [];
-  
+  //@Input() shops: Shop[];
+
 
   IsShopEditing = false;
   selectedShopControl = new FormControl();
   availbaleShops: Shop[] = [];
+  subscription: Subscription;
 
   constructor(private dataService: DataService, private routeParams: ActivatedRoute, private cartService: CartService) { }
 
@@ -29,7 +32,6 @@ export class SummaryComponent implements OnInit {
       data => {
         this.availbaleShops = data.initData[0];
         let currentCart = data.initData[1];
-        console.log(data.initData[1]);
         if (!currentCart || currentCart.length == 0)
           return;
 
@@ -45,7 +47,16 @@ export class SummaryComponent implements OnInit {
         startWith(''),
         map(value => typeof value === 'string' ? value : value.name),
         map(name => name ? this._filter(name) : this.availbaleShops.slice())
-      );
+    );
+    if (!this.shops) {
+      this.shops = [];
+    }
+    this.subscription = this.cartService.currentShops.subscribe(message => this.shops = message);
+    if (this.shops) {
+      this.shops.forEach(shop => {
+        shop.mode = `summary`;
+      });
+    }
   }
   addNewShop(): void {
     this.IsShopEditing = true;
@@ -72,7 +83,7 @@ export class SummaryComponent implements OnInit {
         this.onCancel();
         return;
       }
-        
+      selectedShop.mode = `summary`;
       this.shops.push(selectedShop);
       this.IsShopEditing = false;
       this.selectedShopControl.setValue(``);
@@ -90,6 +101,7 @@ export class SummaryComponent implements OnInit {
         data => {
           let savedShop = data;
           this.availbaleShops.push(savedShop);
+          savedShop.mode = `summary`;
           this.shops.push(savedShop);
           this.IsShopEditing = false;
           this.selectedShopControl.setValue(``);
@@ -100,5 +112,9 @@ export class SummaryComponent implements OnInit {
   onCancel(): void {
     this.IsShopEditing = false;
   }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
 }
 

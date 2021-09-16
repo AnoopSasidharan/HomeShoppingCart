@@ -10,12 +10,14 @@ import { Shopitem } from '../shared/Models/shopitem';
 })
 export class ItemsComponent implements OnInit {
   @Input() currentItem: Shopitem;
+  @Input() mode: string;
   constructor() { }
 
   ngOnInit(): void {
     if (!this.currentItem.quantity) {
       this.currentItem.quantity = 0;
     }
+    console.log(`${this.mode} mode from items`);
   }
   addQuantity(quanity: number): void {
     if (this.currentItem.quantity <= 0 && quanity<0) {

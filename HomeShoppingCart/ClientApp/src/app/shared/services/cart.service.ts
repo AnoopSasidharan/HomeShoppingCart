@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { Cart } from '../Models/cart';
 import { ICart } from '../Models/icart';
+import { Shop } from '../Models/shop';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,15 @@ export class CartService {
   userCarts: Cart[];
   test: ICart;
   _baseUrl: string;
+  private shops = new BehaviorSubject<Shop[]>(null);
+  currentShops = this.shops.asObservable();
   constructor(@Inject('BASE_URL') baseUrl: string, private http: HttpClient) {
     this._baseUrl = baseUrl;
   }
+  changeShops(shops: Shop[]) {
+    this.shops.next(shops);
+  }
+
   createNewCart(): Observable<any> {
     let cart: Partial<ICart> = {
     };
