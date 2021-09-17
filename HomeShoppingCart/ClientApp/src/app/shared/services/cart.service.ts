@@ -47,4 +47,8 @@ export class CartService {
 
     return this.http.get(this._baseUrl + `api/cart`, { params: _params });
   }
+
+  patchCart(cartId: number, patchData: any): Observable<any> {
+    return this.http.patch(this._baseUrl + `api/cart/${cartId}`, patchData);
+  }
 }

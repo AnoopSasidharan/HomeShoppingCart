@@ -23,8 +23,8 @@
     <div>Buying From: {{currentItem.shopName}}</div>
     <div>Quantity:{{currentItem.quantity}}</div>
     <!--<button class="btn btn-warning">Delete</button>-->
-    <a *ngIf="mode=='summary'" href="#" class="link-danger text-danger">Delete</a>
-    <a *ngIf="mode=='cart'" href="#" class="link-primary text-primary">Mark Completed</a>
+    <a *ngIf="mode=='summary'" [routerLink]="" class="text-danger" (click)="deleteItem()">Delete</a>
+    <a *ngIf="mode=='cart'" class="link-primary text-primary">Mark Completed</a>
     <a *ngIf="mode=='cart' && currentItem.isBagged" href="#" class="link-primary text-success disabled">Completed</a>
   </section>
 </section>

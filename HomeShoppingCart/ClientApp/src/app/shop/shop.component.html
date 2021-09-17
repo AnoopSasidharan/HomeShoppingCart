@@ -11,7 +11,7 @@
           <app-items [currentItem]="item"></app-items>
         </li>
       </ul>-->
-      <app-items [currentItem]="item" [mode]="currentShop.mode" *ngFor="let item of currentShop.shopItems"></app-items>
+      <app-items (deleted)="onItemDelete($event)" [currentItem]="item" [mode]="currentShop.mode" *ngFor="let item of currentShop.shopItems"></app-items>
       <form *ngIf="isEditorAddMode" class="bg-secondary text-light" (ngSubmit)="saveItem()">
         <div class="row">
           <mat-form-field class="col-md-7 m-1" appearance="fill">

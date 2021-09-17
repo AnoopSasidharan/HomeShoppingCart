@@ -2,6 +2,7 @@
 using HomeShoppingCart.Data.Entity;
 using HomeShoppingCart.Models;
 using HomeShoppingCart.Services;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -48,6 +49,34 @@ namespace HomeShoppingCart.Controllers
             await _cartRepository.SaveRepositroyAsync();
 
             return CreatedAtRoute("GetCartById", new { Id = cart.Id }, cart);
+        }
+        [HttpPatch("{Id}")]
+        public async Task<ActionResult> PatchCart(int Id, [FromBody] JsonPatchDocument<CartUpdateDto> jsonPatchDocument)
+        {
+            var cart = await _cartRepository.GetCartsByIdAsync(Id);
+            if (cart == null)
+            {
+                return NotFound();
+            }
+
+            bool completed = true;
+            if (!cart.IsCompleted)
+            {
+                completed = false;
+            }
+
+            var cartToUpdate = _mapper.Map<CartUpdateDto>(cart);
+            jsonPatchDocument.ApplyTo(cartToUpdate, ModelState);
+
+            _mapper.Map(cartToUpdate, cart);
+            if (cart.IsCompleted && !completed)
+            {
+                cart.CompletedDate = DateTime.Now;
+            }
+
+            await _cartRepository.SaveRepositroyAsync();
+
+            return NoContent();
         }
     }
 }

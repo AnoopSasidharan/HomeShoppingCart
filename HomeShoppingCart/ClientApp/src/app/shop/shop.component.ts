@@ -35,11 +35,8 @@ export class ShopComponent implements OnInit {
     this.isEditorAddMode = true;
   }
   saveItem(): void {
-    //console.log(`on save item`);
     this.isEditorAddMode = false;
     var selectedItem = this.selectedItemControl.value;
-
-    //console.log(selectedItem);
 
     let shopItem: Shopitem = new Shopitem();
 
@@ -119,9 +116,6 @@ export class ShopComponent implements OnInit {
           });
           this.dataservice.CreateShopItems(unsavedItems).subscribe(
             items => {
-              // console.log(`items saved`);
-              // console.log(items);
-              // this.updateSavedItems(this.cartService.userCart.CurrentCart.id, this.currentShop.id);
               for (let i = 0; i < unsavedItems.length; i++) {
                 unsavedItems[i].id = items[i].id;
               }
@@ -143,12 +137,9 @@ export class ShopComponent implements OnInit {
 
       this.dataservice.CreateShopItems(unsavedItems).subscribe(
         items => {
-          // console.log(items);
-          // this.updateSavedItems(this.cartService.userCart.CurrentCart.id, this.currentShop.id);
           for (let i = 0; i < unsavedItems.length; i++) {
             unsavedItems[i].id = items[i].id;
           }
-          // this.updateSavedItems(this.cartService.userCart.CurrentCart.id, this.currentShop.id);
         },
         err => {
           console.error(err);
@@ -157,15 +148,13 @@ export class ShopComponent implements OnInit {
     }
 
   }
-  private updateSavedItems(cartId: number, shopId: number): void {
-    let quryParams = {
-      shopId: shopId,
-      cartId: cartId
-    };
-    this.dataservice.getShopItems(quryParams).subscribe(
-      data => {
-        console.log(data);
-      }
-    )
+  onItemDelete($event): void {
+    console.log($event);
+    let tobeDeletedItem = $event as Shopitem;
+
+    let item = this.currentShop.shopItems.findIndex(s => s == tobeDeletedItem);
+    console.log(item);
+
+    this.currentShop.shopItems.splice(item, 1);
   }
 }

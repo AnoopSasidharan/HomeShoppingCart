@@ -10,6 +10,6 @@ namespace HomeShoppingCart.Data.Entity
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
-        //public ICollection<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
+        public bool IsCompleted { get; set; }
     }
 }

@@ -45,10 +45,6 @@ namespace HomeShoppingCart.Controllers
             foreach (var shopItem in shopItems)
             {
                 shopItem.CreatedDate = DateTime.Now;
-                //var item = await _cartRepository.GetItemByIdAsync(shopItem.ItemId);
-                //var shop = await _cartRepository.GetShopByIdAsync(shopItem.ShopId);
-                //shopItem.Shop = shop;
-                //shopItem.Item = item;
                 _cartRepository.AddShopItem(shopItem);
             }
             await _cartRepository.SaveRepositroyAsync();

@@ -12,10 +12,9 @@ import { DataService } from '../shared/services/data.service';
 })
 export class CartComponent implements OnInit {
 
-  shops: Shop[] = []; // temp;
-  mySet = new Set();
-  cartElems: any[] = [];
-
+  shops: Shop[] = [];
+  private CartId: number;
+  
   constructor(private dataservice: DataService, private cartService: CartService, private route: Router) { }
 
   ngOnInit(): void {
@@ -25,7 +24,11 @@ export class CartComponent implements OnInit {
     }
     this.dataservice.getAllShopItems(shopitemsParams).subscribe(
       data => {
+        if (data.length > 0) {
+          this.CartId = data[0].cartId;
+        }
         for (let i = 0; i < data.length; i++) {
+          
           let shopName = data[i].shopName;
           var filter = this.shops.some(s => s.name === shopName);
           if (!filter) {
@@ -65,5 +68,14 @@ export class CartComponent implements OnInit {
   editCart(): void {
     this.cartService.changeShops(this.shops);
     this.route.navigate([`/summary`]);
+  }
+  completeShopping(): void {
+    let patchDocument = [{ "op": "replace", "path": "/IsCompleted", "value": true }];
+
+    this.cartService.patchCart(this.CartId, patchDocument).subscribe
+      (data => {
+
+      }, err => {
+      });
   }
 }

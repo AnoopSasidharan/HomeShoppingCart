@@ -94,5 +94,8 @@ export class DataService implements Resolve<any> {
   patchShopItem(shopId: number, patchData: any): Observable<any> {
     return this.http.patch(this._baseUrl + `api/shopitems/${shopId}`, patchData);
   }
+  deleteShopItem(itemId: number): Observable<any> {
+    return this.http.delete(this._baseUrl + `api/shopitems/${itemId}`);
+  }
   
 }

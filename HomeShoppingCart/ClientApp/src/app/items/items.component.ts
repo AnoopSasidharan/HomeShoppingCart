@@ -1,7 +1,8 @@
-import { Input } from '@angular/core';
+import { Input, Output, EventEmitter } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Item } from '../shared/Models/item';
 import { Shopitem } from '../shared/Models/shopitem';
+import { DataService } from '../shared/services/data.service';
 
 @Component({
   selector: 'app-items',
@@ -11,13 +12,14 @@ import { Shopitem } from '../shared/Models/shopitem';
 export class ItemsComponent implements OnInit {
   @Input() currentItem: Shopitem;
   @Input() mode: string;
-  constructor() { }
+  @Output() deleted = new EventEmitter<Shopitem>();
+  
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     if (!this.currentItem.quantity) {
       this.currentItem.quantity = 0;
     }
-    console.log(`${this.mode} mode from items`);
   }
   addQuantity(quanity: number): void {
     if (this.currentItem.quantity <= 0 && quanity<0) {
@@ -25,5 +27,19 @@ export class ItemsComponent implements OnInit {
     }
 
     this.currentItem.quantity += quanity;
+  }
+  deleteItem(): void {
+    if (this.currentItem.id && this.currentItem.id > 0) {
+      this.dataService.deleteShopItem(this.currentItem.id).subscribe(
+        data => {
+          this.deleted.emit(this.currentItem);
+        },
+        err => {
+
+        }
+      );
+    } else {
+      this.deleted.emit(this.currentItem);
+    }
   }
 }
