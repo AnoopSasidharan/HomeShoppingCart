@@ -72,6 +72,10 @@ namespace HomeShoppingCart.Controllers
             if (cart.IsCompleted && !completed)
             {
                 cart.CompletedDate = DateTime.Now;
+                if(await _cartRepository.IsNonCompletedItemsExists(Id))
+                {
+                    await _cartRepository.MarkItemsComplete(Id);
+                }
             }
 
             await _cartRepository.SaveRepositroyAsync();

@@ -1,6 +1,18 @@
 <body>
-  <app-home></app-home>
-  <div class="container">
-    <!--<router-outlet></router-outlet>-->
-  </div>
+  <main class="container">
+    <header>
+      <h2  [routerLink]="['/']">Shopping Cart</h2>
+      <div class="navoptions">
+        <a [routerLink]="['/']" class="text-success"><i class="bi bi-house"></i></a>
+        <a [routerLink]="['/cart']">
+          <i class="bi bi-cart2 text-success">
+          </i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-success"></span>
+          <span class="text-primary" *ngIf="currentCart && currentCart.id">1</span>
+        </a>
+      </div>
+    </header>
+    <section>
+      <router-outlet></router-outlet>
+    </section>
+  </main>
 </body>

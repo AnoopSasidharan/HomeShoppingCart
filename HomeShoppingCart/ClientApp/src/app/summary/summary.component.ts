@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Cart } from '../shared/Models/cart';
+import { ICart } from '../shared/Models/icart';
 import { Shop } from '../shared/Models/shop';
 import { CartService } from '../shared/services/cart.service';
 import { DataService } from '../shared/services/data.service';
@@ -21,6 +22,8 @@ export class SummaryComponent implements OnInit, OnDestroy {
   selectedShopControl = new FormControl();
   availbaleShops: Shop[] = [];
   subscription: Subscription;
+  cartSubscription: Subscription;
+  currentCart: ICart;
 
   constructor(private dataService: DataService, private routeParams: ActivatedRoute, private cartService: CartService) { }
 
@@ -29,14 +32,20 @@ export class SummaryComponent implements OnInit, OnDestroy {
     this.routeParams.data.subscribe(
       data => {
         this.availbaleShops = data.initData[0];
+        
         let currentCart = data.initData[1];
-        if (!currentCart || currentCart.length == 0)
-          return;
 
-        if (!this.cartService.userCart) {
-          this.cartService.userCart = new Cart();
-        }
-        this.cartService.userCart.CurrentCart = currentCart;
+        this.cartSubscription= this.cartService.currentCart.subscribe(c => currentCart = c);
+        
+
+        this.dataService.LoadAllItems().subscribe();
+        //if (!currentCart || currentCart.length == 0)
+        //  return;
+
+        //if (!this.cartService.userCart) {
+        //  this.cartService.userCart = new Cart();
+        //}
+        //this.cartService.userCart.CurrentCart = currentCart;
       }
     );
 
@@ -72,7 +81,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
     return this.availbaleShops.filter(option => option.name.toLowerCase().includes(filterValue));
   }
   AddShop(): void {
-    this.dataService.LoadAllItems().subscribe();
     var selectedShop = this.selectedShopControl.value;
     if (selectedShop["name"]) {
       let index = this.shops.findIndex(s => s.id === selectedShop.id);
@@ -112,6 +120,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.cartSubscription.unsubscribe();
   }
 
 }

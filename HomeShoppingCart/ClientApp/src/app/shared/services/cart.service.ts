@@ -12,15 +12,20 @@ import { Shop } from '../Models/shop';
 export class CartService {
   userCart: Cart;
   userCarts: Cart[];
-  test: ICart;
+  //test: ICart;
   _baseUrl: string;
   private shops = new BehaviorSubject<Shop[]>(null);
+  private cart = new BehaviorSubject<ICart>(null);
   currentShops = this.shops.asObservable();
+  currentCart = this.cart.asObservable();
   constructor(@Inject('BASE_URL') baseUrl: string, private http: HttpClient) {
     this._baseUrl = baseUrl;
   }
   changeShops(shops: Shop[]) {
     this.shops.next(shops);
+  }
+  changeCart(cart: ICart) {
+    this.cart.next(cart);
   }
 
   createNewCart(): Observable<any> {
@@ -30,6 +35,7 @@ export class CartService {
       .pipe(
         map((val) => {
           let cart = val as ICart;
+          this.changeCart(cart);
           console.log(cart);
           if (cart) {
             if (!this.userCart) {
@@ -45,7 +51,17 @@ export class CartService {
     let _params = new HttpParams();
     _params = _params.append('getLatestCartOnly', queryParams.getLatestCartOnly);
 
-    return this.http.get(this._baseUrl + `api/cart`, { params: _params });
+    return this.http.get(this._baseUrl + `api/cart`, { params: _params })
+      .pipe(
+        map(val => {
+          console.log(val as ICart[]);
+          
+          let cart = val as ICart[];
+          console.log(`cart -${cart}`);
+          this.changeCart(cart[0]);
+            return val;
+          })
+        );
   }
 
   patchCart(cartId: number, patchData: any): Observable<any> {

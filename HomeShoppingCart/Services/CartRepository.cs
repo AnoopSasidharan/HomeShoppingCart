@@ -116,5 +116,19 @@ namespace HomeShoppingCart.Services
         {
             _cartDbContext.ShopItems.Remove(item);
         }
+        public async Task<bool> IsNonCompletedItemsExists(int cartId)
+        {
+            return await _cartDbContext.ShopItems.AnyAsync(i => i.CartId == cartId && i.IsBagged == false);
+        }
+        public async Task MarkItemsComplete(int CartId)
+        {
+            var carts = _cartDbContext.ShopItems.Where(s => s.CartId == CartId && s.IsBagged == false);
+            await carts.ForEachAsync(item =>
+            {
+                item.IsBagged = true;
+                item.CompleteDate = DateTime.Now;
+            });
+            return;
+        }
     }
 }

@@ -1,11 +1,11 @@
 <div *ngIf="shops?.length<1">Your Cart is empty</div>
 <div *ngIf="shops?.length>0" class="cartbuttons">
   <button class="btn btn-primary m-1" (click)="editCart()">Edit Cart</button>
-  <button class="btn btn-primary m-1" (click)="completeShopping()">Completed?</button>
+  <button class="btn btn-primary m-1" (click)="completeShopping()">Complete All</button>
 </div>
 <div *ngIf="shops?.length>0" class="card bg-dark">
   <div *ngFor="let shop of shops">
-    <div >
+    <div>
       <div class="card-header bg-secondary">
         <h5 class="card-title"> {{shop.name}}</h5>
       </div>

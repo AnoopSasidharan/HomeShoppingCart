@@ -1,30 +1,20 @@
-<!--<section>
-  <div class="row border border-primary">
-    <div class="col-7"><span>{{currentItem.itemName}}</span> </div>
-    <div class="col-3">
-      <span (click)="addQuantity(-1)"><i class="bi bi-dash-lg text-danger ms-1"></i></span>
-      <span>{{currentItem.quantity}}</span>
-      <span (click)="addQuantity(1)"><i class="bi bi-plus-lg text-success me-1"></i></span>
-    </div>
-    <div class="col-2">
-      <label *ngIf="!currentItem.id" style="height:inherit; margin:1px; background-color:orangered; color:white" >UnSaved</label>
-      <label *ngIf="currentItem.id && currentItem.id>1" style="height:inherit; margin:1px; background-color:forestgreen; color:white">Saved</label>
-    </div>
-  </div>
-</section>-->
 <section class="card text-primary">
-  <!--<header>
-    <h4>{{currentItem.itemName}}</h4>
-  </header>-->
   <div class="card-header">
     <h6>{{currentItem.itemName}}</h6>
   </div>
   <section class="card-body item-details">
-    <div>Buying From: {{currentItem.shopName}}</div>
-    <div>Quantity:{{currentItem.quantity}}</div>
-    <!--<button class="btn btn-warning">Delete</button>-->
+    <div>From: {{currentItem.shopName}}</div>
+    <div>
+      Quantity:
+      <select *ngIf="mode=='summary'" [(ngModel)]="currentItem.quantity">
+        <option *ngFor="let quantity of quantities">{{quantity}}</option>
+      </select>
+      <span *ngIf="mode=='cart'">{{currentItem.quantity}}</span>
+    </div>
     <a *ngIf="mode=='summary'" [routerLink]="" class="text-danger" (click)="deleteItem()">Delete</a>
-    <a *ngIf="mode=='cart'" class="link-primary text-primary">Mark Completed</a>
-    <a *ngIf="mode=='cart' && currentItem.isBagged" href="#" class="link-primary text-success disabled">Completed</a>
+    <span *ngIf="mode=='summary' && currentItem.id && currentItem.id>0" class="text-success">Saved</span>
+    <span *ngIf="mode=='summary' && (!currentItem.id || currentItem.id<0)" class="text-warning">UnSaved</span>
+    <a *ngIf="mode=='cart' && !currentItem.isBagged" [routerLink]="" class="link-primary text-primary" (click)="completeItem()">Complete</a>
+    <span *ngIf="mode=='cart' && currentItem.isBagged" class="link-primary text-success disabled">Completed</span>
   </section>
 </section>

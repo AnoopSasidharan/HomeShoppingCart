@@ -61,12 +61,12 @@ export class CartComponent implements OnInit {
       data => {
         item.isBagged = true;
       }
-
     )
   }
 
   editCart(): void {
     this.cartService.changeShops(this.shops);
+
     this.route.navigate([`/summary`]);
   }
   completeShopping(): void {

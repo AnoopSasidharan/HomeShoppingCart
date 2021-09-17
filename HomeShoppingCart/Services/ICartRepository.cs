@@ -22,5 +22,7 @@ namespace HomeShoppingCart.Services
         Task<ShopItem> GetShopItemByIdAsync(int id);
         void AddShopItem(ShopItem item);
         void RemoveShopItem(ShopItem item);
+        Task<bool> IsNonCompletedItemsExists(int cartId);
+        Task MarkItemsComplete(int CartId);
     }
 }

@@ -1,9 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import { EMPTY } from 'rxjs';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin, from, EMPTY} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Cart } from '../Models/cart';
 import { ICart } from '../Models/icart';
@@ -26,8 +24,6 @@ export class DataService implements Resolve<any> {
       this.GetAllShops(),
       this.cartService.getCarts({ getLatestCartOnly: true })
     ]);
-
-    return 
   }
   
 
