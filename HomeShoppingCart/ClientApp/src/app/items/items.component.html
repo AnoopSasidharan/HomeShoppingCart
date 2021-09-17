@@ -3,7 +3,7 @@
     <h6>{{currentItem.itemName}}</h6>
   </div>
   <section class="card-body item-details">
-    <div>From: {{currentItem.shopName}}</div>
+    <div *ngIf="mode=='cart'">From: {{currentItem.shopName}}</div>
     <div>
       Quantity:
       <select *ngIf="mode=='summary'" [(ngModel)]="currentItem.quantity">

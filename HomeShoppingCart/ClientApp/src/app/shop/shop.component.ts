@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, startWith } from 'rxjs/operators';
-import { Cart } from '../shared/Models/cart';
 import { ICart } from '../shared/Models/icart';
 import { Item } from '../shared/Models/item';
 import { Shop } from '../shared/Models/shop';
@@ -69,9 +68,7 @@ export class ShopComponent implements OnInit {
       this.selectedItemControl.setValue(``);
     } else {
       //add it to db
-      if (selectedItem?.Trim().length == 0)
-        return;
-
+      
       let index = this.currentShop.shopItems.findIndex(i => i.itemName == selectedItem);
       if (index > -1) {
         this.selectedItemControl.setValue(``);
@@ -93,7 +90,6 @@ export class ShopComponent implements OnInit {
           this.selectedItemControl.setValue(``);
         })
     }
-
   }
   onCancel(): void {
     this.isEditorAddMode = false;
@@ -110,23 +106,18 @@ export class ShopComponent implements OnInit {
   addToCart(): void {
     var unsavedItems = this.currentShop.shopItems.filter(i => (!i.id) || (i.id < 1));
 
-    //if (!this.currentCart || this.currentCart.id<1) {
-
-    //}
-
     if (!this.currentCart || !this.currentCart.id || this.currentCart.id<1) {
       this.cartService.createNewCart().subscribe(
         data => {
-          console.log(`current cart ${this.currentCart}`);
           unsavedItems.forEach(item => {
-            item.cartId = this.cartService.userCart.CurrentCart.id;
+            item.cartId = this.currentCart.id;
             item.shopId = this.currentShop.id;
-            item.cartId = this.cartService.userCart.CurrentCart.id
           });
           this.dataservice.CreateShopItems(unsavedItems).subscribe(
             items => {
               for (let i = 0; i < unsavedItems.length; i++) {
                 unsavedItems[i].id = items[i].id;
+                this.cartService.addItems(1);
               }
             },
             err => {
@@ -139,7 +130,6 @@ export class ShopComponent implements OnInit {
         }
       )
     } else {
-      console.log(`test`);
       unsavedItems.forEach(item => {
         item.cartId = this.currentCart.id;
         item.shopId = this.currentShop.id
@@ -149,6 +139,7 @@ export class ShopComponent implements OnInit {
         items => {
           for (let i = 0; i < unsavedItems.length; i++) {
             unsavedItems[i].id = items[i].id;
+            this.cartService.addItems(1);
           }
         },
         err => {
@@ -159,12 +150,11 @@ export class ShopComponent implements OnInit {
 
   }
   onItemDelete($event): void {
-    console.log($event);
     let tobeDeletedItem = $event as Shopitem;
-
     let item = this.currentShop.shopItems.findIndex(s => s == tobeDeletedItem);
-    console.log(item);
-
     this.currentShop.shopItems.splice(item, 1);
+    if (tobeDeletedItem.id) {
+      this.cartService.deleteItems(1);
+    }
   }
 }

@@ -1,18 +1,31 @@
 <body>
   <main class="container">
     <header>
-      <h2  [routerLink]="['/']">Shopping Cart</h2>
+      <h2 [routerLink]="['/']">Shopping Cart</h2>
       <div class="navoptions">
         <a [routerLink]="['/']" class="text-success"><i class="bi bi-house"></i></a>
         <a [routerLink]="['/cart']">
           <i class="bi bi-cart2 text-success">
           </i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-success"></span>
-          <span class="text-primary" *ngIf="currentCart && currentCart.id">1</span>
+          <span class="text-primary" *ngIf="currentItemsTotal>0">{{currentItemsTotal}}</span>
         </a>
       </div>
     </header>
     <section>
       <router-outlet></router-outlet>
     </section>
+    <div class="busy-overlay"
+         [style.display]="busyService.isVisible()?'block':'none'">
+      <div class="busy-message-container"
+           aria-live="assertive"
+           aria-atomic="true">
+        <div>
+          <div style="display:inline-block;width:90px;height:90px;left:calc(100% - 100px)">
+            <mat-spinner></mat-spinner>
+          </div>
+        </div>
+        <div class="busy-message">{{ busyService.getMsg() }}</div>
+      </div>
+    </div>
   </main>
 </body>

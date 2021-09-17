@@ -3,7 +3,6 @@ import { Inject, Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of, forkJoin, from, EMPTY} from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Cart } from '../Models/cart';
 import { ICart } from '../Models/icart';
 import { Item } from '../Models/item';
 import { Shop } from '../Models/shop';

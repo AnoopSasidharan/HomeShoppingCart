@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { Cart } from '../Models/cart';
+import { map} from 'rxjs/operators';
 import { ICart } from '../Models/icart';
 import { Shop } from '../Models/shop';
 
@@ -10,14 +9,13 @@ import { Shop } from '../Models/shop';
   providedIn: 'root'
 })
 export class CartService {
-  userCart: Cart;
-  userCarts: Cart[];
-  //test: ICart;
   _baseUrl: string;
   private shops = new BehaviorSubject<Shop[]>(null);
   private cart = new BehaviorSubject<ICart>(null);
+  private totalCartItems = new BehaviorSubject<number>(0);
   currentShops = this.shops.asObservable();
   currentCart = this.cart.asObservable();
+  currenttotalCartItems = this.totalCartItems.asObservable();
   constructor(@Inject('BASE_URL') baseUrl: string, private http: HttpClient) {
     this._baseUrl = baseUrl;
   }
@@ -26,6 +24,19 @@ export class CartService {
   }
   changeCart(cart: ICart) {
     this.cart.next(cart);
+  }
+  addItems(count: number) {
+    let val = this.totalCartItems.value;
+    val = val + count;
+    this.changeItems(val);
+  }
+  deleteItems(count: number) {
+    let val = this.totalCartItems.value;
+    val = val - count;
+    this.changeItems(val);
+  }
+  changeItems(total: number) {
+    this.totalCartItems.next(total);
   }
 
   createNewCart(): Observable<any> {
@@ -36,13 +47,6 @@ export class CartService {
         map((val) => {
           let cart = val as ICart;
           this.changeCart(cart);
-          console.log(cart);
-          if (cart) {
-            if (!this.userCart) {
-              this.userCart = new Cart();
-            }
-            this.userCart.CurrentCart = cart;
-          }
             return val;
           })
         );
@@ -54,10 +58,7 @@ export class CartService {
     return this.http.get(this._baseUrl + `api/cart`, { params: _params })
       .pipe(
         map(val => {
-          console.log(val as ICart[]);
-          
           let cart = val as ICart[];
-          console.log(`cart -${cart}`);
           this.changeCart(cart[0]);
             return val;
           })

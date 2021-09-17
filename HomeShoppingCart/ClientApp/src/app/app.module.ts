@@ -9,11 +9,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+//import { HomeComponent } from './home/home.component';
 import { CartComponent } from './cart/cart.component';
 import { ItemsComponent } from './items/items.component';
 import { ShopComponent } from './shop/shop.component';
@@ -23,7 +23,7 @@ import { SummaryComponent } from './summary/summary.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    //HomeComponent,
     CartComponent,
     ItemsComponent,
     ShopComponent,
@@ -39,6 +39,7 @@ import { SummaryComponent } from './summary/summary.component';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     AppRoutingModule,
   ],
   providers: [],

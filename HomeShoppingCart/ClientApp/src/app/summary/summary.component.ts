@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { Cart } from '../shared/Models/cart';
 import { ICart } from '../shared/Models/icart';
 import { Shop } from '../shared/Models/shop';
 import { CartService } from '../shared/services/cart.service';
@@ -28,24 +27,11 @@ export class SummaryComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService, private routeParams: ActivatedRoute, private cartService: CartService) { }
 
   ngOnInit(): void {
-
+    this.dataService.LoadAllItems().subscribe();
     this.routeParams.data.subscribe(
       data => {
         this.availbaleShops = data.initData[0];
-        
-        let currentCart = data.initData[1];
-
-        this.cartSubscription= this.cartService.currentCart.subscribe(c => currentCart = c);
-        
-
-        this.dataService.LoadAllItems().subscribe();
-        //if (!currentCart || currentCart.length == 0)
-        //  return;
-
-        //if (!this.cartService.userCart) {
-        //  this.cartService.userCart = new Cart();
-        //}
-        //this.cartService.userCart.CurrentCart = currentCart;
+        this.cartSubscription = this.cartService.currentCart.subscribe(c => this.currentCart = c);
       }
     );
 
