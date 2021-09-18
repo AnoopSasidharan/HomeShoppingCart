@@ -14,3 +14,34 @@ header {
     display:flex;
     flex-direction:row;
 }
+.busy-overlay {
+  position: fixed;
+  background-color: rgba(128,128,128,0.08);
+  cursor: wait;
+  top: 0;
+  left: 0;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  z-index: 1000000;
+  overflow: hidden;
+}
+
+.busy-message-container {
+  position: absolute;
+  top: calc(40% + 25px);
+  left: 0;
+  right: 0;
+  height: 0;
+  text-align: center;
+  background-color: transparent;
+  cursor: wait;
+}
+
+.busy-message {
+  display: inline-block;
+  font-size: 25px;
+  font-style: italic;
+  text-shadow: 0px 0px 1px #2191de,0px 0px 1px #ffffff,0px 0px 1px #ffffff,0px 0px 1px #ffffff,0px 0px 1px #ffffff,0px 0px 2px #ffffff,0px 0px 2px #ffffff;
+  color: #0e80cf;
+}
+

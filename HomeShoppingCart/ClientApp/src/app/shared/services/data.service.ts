@@ -47,7 +47,20 @@ export class DataService implements Resolve<any> {
       );
   }
   CreateNewShop(shop: Shop): Observable<any> {
-    return this.http.post<Shop>(this._baseUrl + `api/shops`, shop);
+    this.busyService.showBusy(`Creating new shop`);
+    return this.http.post<Shop>(this._baseUrl + `api/shops`, shop)
+      .pipe
+      (
+        map(data => {
+          this.busyService.hideBusy();
+          return data;
+        }),
+        catchError(err => {
+          console.error(`no response from server or error occured - ${err}`);
+          this.busyService.hideBusy();
+          return of([]);
+        })
+      );
   }
   LoadAllItems(): Observable<any>{
     if (this.allItemsStore.length == 0) {
@@ -73,10 +86,36 @@ export class DataService implements Resolve<any> {
     }
   }
   CreateNewItem(item: Item): Observable<any> {
-    return this.http.post<Shop>(this._baseUrl + `api/items`, item);
+    this.busyService.showBusy(`creating new Item`);
+    return this.http.post<Shop>(this._baseUrl + `api/items`, item)
+      .pipe
+      (
+        map(data => {
+          this.busyService.hideBusy();
+          return data;
+        }),
+        catchError(err => {
+          console.error(`no response from server or error occured - ${err}`);
+          this.busyService.hideBusy();
+          return of([]);
+        })
+      );
   }
   CreateShopItems(shopItems: Shopitem[]): Observable<any> {
-    return this.http.post<Shopitem[]>(this._baseUrl + `api/shopitemscollections`, shopItems);
+    this.busyService.showBusy(`Saving item....`);
+    return this.http.post<Shopitem[]>(this._baseUrl + `api/shopitemscollections`, shopItems)
+      .pipe
+      (
+        map(data => {
+          this.busyService.hideBusy();
+          return data;
+        }),
+        catchError(err => {
+          console.error(`no response from server or error occured - ${err}`);
+          this.busyService.hideBusy();
+          return of([]);
+        })
+      );
   }
   getShopItems(queryparams: any): Observable<any> {
 
