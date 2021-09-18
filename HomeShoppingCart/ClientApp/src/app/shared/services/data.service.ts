@@ -2,11 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable, of, forkJoin, from, EMPTY} from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ICart } from '../Models/icart';
 import { Item } from '../Models/item';
 import { Shop } from '../Models/shop';
 import { Shopitem } from '../Models/shopitem';
+import { BusyService } from './busy.service';
 import { CartService } from './cart.service';
 
 @Injectable({
@@ -15,7 +16,7 @@ import { CartService } from './cart.service';
 export class DataService implements Resolve<any> {
   _baseUrl: string;
   allItemsStore: Item[] = [];
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private cartService: CartService) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private cartService: CartService, private busyService: BusyService) {
     this._baseUrl = baseUrl;
   }
   resolve(): Observable<any> {
@@ -30,7 +31,20 @@ export class DataService implements Resolve<any> {
     return this.http.post<ICart>(this._baseUrl + `api/cart`, cart);
   }
   GetAllShops(): Observable<any> {
-    return this.http.get(this._baseUrl + `api/shops`);
+    this.busyService.showBusy(``);
+    return this.http.get(this._baseUrl + `api/shops`)
+      .pipe
+      (
+        map(data => {
+          this.busyService.hideBusy();
+          return data;
+        }),
+        catchError(err => {
+          console.error(`no response from server or error occured - ${err}`);
+          this.busyService.hideBusy();
+          return of([]);
+        })
+      );
   }
   CreateNewShop(shop: Shop): Observable<any> {
     return this.http.post<Shop>(this._baseUrl + `api/shops`, shop);

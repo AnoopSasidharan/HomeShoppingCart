@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HomeShoppingCart.Data.Entity;
 using HomeShoppingCart.Helpers;
-
 using HomeShoppingCart.Models;
 using HomeShoppingCart.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +23,10 @@ namespace HomeShoppingCart.Controllers
             this._mapper = mapper;
             this._cartRepository = cartRepository;
         }
+        [HttpGet()]
         public async Task<ActionResult<ICollection<ShopItemDto>>> ShopItemsGet([FromQuery] ItemsQueryParameters itemsQueryParameters)
         {
-            
             var shopItems = await _cartRepository.GetShopItemsAsync(itemsQueryParameters);
-
             return Ok(_mapper.Map<IEnumerable<ShopItemDto>>(shopItems));
         }
 

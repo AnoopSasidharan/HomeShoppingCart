@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map} from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map} from 'rxjs/operators';
 import { ICart } from '../Models/icart';
 import { Shop } from '../Models/shop';
+import { BusyService } from './busy.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class CartService {
   currentShops = this.shops.asObservable();
   currentCart = this.cart.asObservable();
   currenttotalCartItems = this.totalCartItems.asObservable();
-  constructor(@Inject('BASE_URL') baseUrl: string, private http: HttpClient) {
+  constructor(@Inject('BASE_URL') baseUrl: string, private http: HttpClient, private busyService: BusyService) {
     this._baseUrl = baseUrl;
   }
   changeShops(shops: Shop[]) {
@@ -52,6 +53,7 @@ export class CartService {
         );
   }
   getCarts(queryParams: any): Observable<any> {
+    this.busyService.showBusy(``);
     let _params = new HttpParams();
     _params = _params.append('getLatestCartOnly', queryParams.getLatestCartOnly);
 
@@ -60,9 +62,15 @@ export class CartService {
         map(val => {
           let cart = val as ICart[];
           this.changeCart(cart[0]);
+          this.busyService.hideBusy();
             return val;
-          })
-        );
+        }),
+        catchError(err => {
+          console.error(`no response from server or error occured - ${err}`);
+          this.busyService.hideBusy();
+          return of([]);
+        })
+     );
   }
 
   patchCart(cartId: number, patchData: any): Observable<any> {
